@@ -1,12 +1,12 @@
 package xkv.visual.css;
 
-public enum PanelStyle
+public enum Style
 {
-    INSET("inset-object");
+    INSET("inset-object"), BSP_BUTTON("bsp-button");
 
     private final String style;
 
-    PanelStyle(String style)
+    Style(String style)
     {
         this.style = style;
     }
