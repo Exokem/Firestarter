@@ -23,8 +23,12 @@ public class Display
     public static void initialize(Stage stage)
     {
 
+        audionAccess.getStyleClass().add("area-button");
+        optionsAccess.getStyleClass().add("area-button");
+
         applyInset(accessView);
 
+//        stage.setResizable(false);
 
         accessView.add(optionsAccess, 0, 0);
         accessView.add(audionAccess, 1, 0);
