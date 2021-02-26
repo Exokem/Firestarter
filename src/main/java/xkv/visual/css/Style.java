@@ -2,7 +2,7 @@ package xkv.visual.css;
 
 public enum Style
 {
-    INSET("inset-object"), BSP_BUTTON("bsp-button");
+    DEBUG("debug"), INSET("inset-object"), BSP_BUTTON("bsp-button");
 
     private final String style;
 

@@ -18,6 +18,7 @@ public interface IStylable
         return null;
     }
 
+    @Deprecated
     default void addVisualClass(String visualClass)
     {
         if (this instanceof Region)
