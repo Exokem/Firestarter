@@ -42,7 +42,7 @@ public class MultiButton extends StandardGridPane implements IStylable
         return buttonStyles;
     }
 
-    public void add(Node child, int columnIndex, int rowIndex, boolean expandH, boolean expandV)
+    public void add(Node child, int columnIndex, int rowIndex, Priority expandH, Priority expandV)
     {
         add(child, columnIndex, rowIndex, 1, 1, expandH, expandV);
     }
@@ -53,22 +53,22 @@ public class MultiButton extends StandardGridPane implements IStylable
         add(child, columnIndex, rowIndex, 1, 1);
     }
 
-    public void add(Node child, int columnIndex, int rowIndex, int colspan, int rowspan, boolean expandH, boolean expandV)
+    public void add(Node child, int columnIndex, int rowIndex, int colspan, int rowspan, Priority expandH, Priority expandV)
     {
         if (child instanceof Button)
         {
             Button button = (Button) child;
 
-            if (expandH)
+            if (expandH != null)
             {
                 button.setMaxWidth(Double.MAX_VALUE);
-                GridPane.setHgrow(button, Priority.ALWAYS);
+                GridPane.setHgrow(button, expandH);
             }
 
-            if (expandV)
+            if (expandV != null)
             {
                 button.setMaxHeight(Double.MAX_VALUE);
-                GridPane.setVgrow(button, Priority.ALWAYS);
+                GridPane.setVgrow(button, expandV);
             }
 
             if (child instanceof IStylable)
@@ -87,6 +87,6 @@ public class MultiButton extends StandardGridPane implements IStylable
     @Override
     public void add(Node child, int columnIndex, int rowIndex, int colspan, int rowspan)
     {
-        add(child, columnIndex, rowIndex, colspan, rowspan, false, false);
+        add(child, columnIndex, rowIndex, colspan, rowspan, Priority.SOMETIMES, Priority.SOMETIMES);
     }
 }
