@@ -7,37 +7,89 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
+import xkv.content.Album;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.ButtonFactory;
 import xkv.visual.controls.MultiButton;
+import xkv.visual.controls.StyledButton;
 import xkv.visual.css.IStylable;
 import xkv.visual.css.PanelApplicators;
 import xkv.visual.css.Style;
 import xkv.visual.images.StyledImageView;
 
-public class AudionPanel extends BorderPane implements IStylable
+import java.util.ArrayList;
+import java.util.List;
+
+public class AudionPanel extends StandardGridPane implements IStylable
 {
+    public static final List<Album> albums = new ArrayList<>();
+
+    public static AudionPanel instance()
+    {
+        return new AudionPanel();
+    }
+
     private final StandardGridPane layoutContent = PanelFactory.paddedGrid(10, 4, 4, Style.INSET);
 
     private final DynamicResizeable root;
 
-    public double panelWidth = 1024;
-    public double panelHeight = 760;
+    private final double panelWidth = 1240;
+    private final double panelHeight = 760;
 
     private AudionPanel()
     {
+        super();
+
+        this.pad(3, 3);
+
         root = DynamicResizeable.root(this, (layoutContent) -> {});
+
+        GridPane.setHgrow(layoutContent, Priority.ALWAYS);
+        GridPane.setVgrow(layoutContent, Priority.ALWAYS);
 
         layoutContent.setPrefWidth(panelWidth);
         layoutContent.setPrefHeight(panelHeight);
 
-        instanceAlbumSelect();
+        layoutContent.add(AudionAlbumSelect.albumProvider(panelWidth), 1, 1);
+        layoutContent.add(AudionAlbumSelect.albumView(panelWidth), 1, 2);
 
         instanceAlbumView();
 
-        this.setCenter(layoutContent);
+        this.add(layoutContent, 1, 1);
+    }
 
-//        Platform.runLater(() -> testContent.setVisible(false));
+    private double scaledWidth(double scale)
+    {
+        return layoutContent.getWidth() * scale;
+    }
+
+    private static class AudionAlbumSelect
+    {
+        private static final double SCALE = 0.195D;
+
+        private static StandardScrollPanel<MultiButton> albumView(double reference)
+        {
+            StandardScrollPanel<MultiButton> albums = PanelFactory.multiButtonScrollPanel().width(SCALE * reference);
+            GridPane.setVgrow(albums, Priority.ALWAYS);
+
+            return albums;
+        }
+
+        private static StyledButton albumProvider(double reference)
+        {
+            StyledButton button = new StyledButton("New Album");
+
+            button.setPrefWidth(SCALE * reference);
+
+            button.setOnAction((actionEvent) -> {});
+
+            return button;
+        }
+    }
+
+    private class AudionAlbumView
+    {
+        // TODO: refactor final layout to here
     }
 
     private void instanceAlbumView()
@@ -65,57 +117,12 @@ public class AudionPanel extends BorderPane implements IStylable
             display.setImage(icon);
         }
 
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(display, 0.20D * layoutContent.getWidth()));
+
         BorderPane imageViewContainer = new BorderPane();
         imageViewContainer.setCenter(display);
         imageViewContainer.getStyleClass().add("shadow");
 
         albumView.add(imageViewContainer, 1, 1);
-    }
-
-    private void instanceAlbumSelect()
-    {
-        StandardScrollPanel<MultiButton> albums = PanelFactory.multiButtonScrollPanel().width(0.195D * panelWidth);
-
-        for (int indx = 0; indx < 30; indx++)
-        {
-            MultiButton btn = ButtonFactory.multiButton(0, 2, 2);
-//            btn.addVisualStyle(Style.BSP_BUTTON);
-
-            btn.add(new Button("F"), 0, 0);
-            btn.add(new Button("X"), 0, 1);
-
-            btn.add(new Button("Album Name"), 1, 0, 1, 2, Priority.ALWAYS, Priority.ALWAYS);
-
-            albums.addItem(btn);
-        }
-
-        Button createAlbum = new Button("New Album");
-
-        createAlbum.setPrefWidth(0.195D * panelWidth);
-
-        layoutContent.add(createAlbum, 1, 1);
-
-        layoutContent.add(albums, 1, 2);
-        GridPane.setVgrow(albums, Priority.ALWAYS);
-    }
-
-    public static AudionPanel instance()
-    {
-        return new AudionPanel();
-    }
-
-    public AudionPanel inset(int dimension)
-    {
-
-        BorderSection.edgeSet().forEach(section ->
-        {
-            Rectangle rect = new Rectangle(dimension, dimension);
-
-            section.place(this, rect);
-
-            rect.setVisible(false);
-        });
-
-        return this;
     }
 }

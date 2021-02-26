@@ -34,7 +34,7 @@ public class Display
         accessView.add(audionAccess, 1, 0);
 
         container.setTop(accessView);
-        container.setCenter(AudionPanel.instance().inset(10));
+        container.setCenter(AudionPanel.instance());
     }
 
     private static final GridPane accessView = new GridPane();
