@@ -5,13 +5,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import xkv.visual.Display;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static xkv.visual.VisualConfiguration.loadCSS;
+import static xkv.visual.VisualResourceLoader.loadCSS;
 
 public class Firestarter extends Application
 {
@@ -33,6 +29,4 @@ public class Firestarter extends Application
 
         stage.show();
     }
-
-
 }
