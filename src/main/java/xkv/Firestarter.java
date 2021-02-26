@@ -1,6 +1,7 @@
 package xkv;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -33,16 +34,7 @@ public class Firestarter extends Application
 
         stage.show();
 
-        main.widthProperty().addListener((observable, oldValue, newValue) ->
-        {
-            double factor = newValue.doubleValue() / oldValue.doubleValue();
-            DynamicResizeable.resizeAll();
-        });
-
-        main.heightProperty().addListener((observable, oldValue, newValue) ->
-        {
-            double factor = newValue.doubleValue() / oldValue.doubleValue();
-            DynamicResizeable.resizeAll();
-        });
+        main.widthProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(DynamicResizeable::resizeAll));
+        main.heightProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(DynamicResizeable::resizeAll));
     }
 }
