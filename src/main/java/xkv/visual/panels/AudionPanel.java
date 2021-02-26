@@ -19,11 +19,15 @@ public class AudionPanel extends BorderPane implements IStylable
 {
     private final StandardGridPane layoutContent = PanelFactory.paddedGrid(10, 4, 4, Style.INSET);
 
+    private final DynamicResizeable root;
+
     public double panelWidth = 1024;
     public double panelHeight = 760;
 
     private AudionPanel()
     {
+        root = DynamicResizeable.root(this, (layoutContent) -> {});
+
         layoutContent.setPrefWidth(panelWidth);
         layoutContent.setPrefHeight(panelHeight);
 
@@ -44,7 +48,7 @@ public class AudionPanel extends BorderPane implements IStylable
 
         layoutContent.add(albumView, 2, 1, 1, 2);
 
-        Image icon = VisualResourceLoader.loadImage(VisualResourceLoader.ResourceHeader.ALBUM_ICONS, "test.png");
+        Image icon = VisualResourceLoader.loadImage(VisualResourceLoader.ResourceHeader.ALBUM_ICONS, "test2.png");
 
         StyledImageView display = new StyledImageView(icon);
 
@@ -53,22 +57,24 @@ public class AudionPanel extends BorderPane implements IStylable
         display.maxWidth(albumView.getWidth());
         display.maxHeight(albumView.getHeight());
 
+        display.addVisualStyle(Style.SHADOW);
+
         if (icon != null)
         {
-
-            VisualResourceLoader.scaleImageView(icon, display, 0.25D * panelWidth);
+            VisualResourceLoader.scaleImageView(display, 0.20D * panelWidth);
             display.setImage(icon);
         }
 
+        BorderPane imageViewContainer = new BorderPane();
+        imageViewContainer.setCenter(display);
+        imageViewContainer.getStyleClass().add("shadow");
 
-
-
-        albumView.add(display, 1, 1);
+        albumView.add(imageViewContainer, 1, 1);
     }
 
     private void instanceAlbumSelect()
     {
-        StandardScrollPanel<MultiButton> albums = PanelFactory.multiButtonScrollPanel().width(200);
+        StandardScrollPanel<MultiButton> albums = PanelFactory.multiButtonScrollPanel().width(0.195D * panelWidth);
 
         for (int indx = 0; indx < 30; indx++)
         {
@@ -85,7 +91,7 @@ public class AudionPanel extends BorderPane implements IStylable
 
         Button createAlbum = new Button("New Album");
 
-        createAlbum.setPrefWidth(200);
+        createAlbum.setPrefWidth(0.195D * panelWidth);
 
         layoutContent.add(createAlbum, 1, 1);
 
