@@ -55,13 +55,8 @@ public class VisualResourceLoader
         }
     }
 
-    public static ImageView scaleImageView(Image image, ImageView view, double squareFactor)
+    public static ImageView scaleImageView(ImageView view, double squareFactor)
     {
-        double scaleFactor = squareFactor / image.getWidth();
-
-//        view.setScaleX(scaleFactor);
-//        view.setScaleY(scaleFactor);
-
         view.setFitHeight(squareFactor);
         view.setFitWidth(squareFactor);
 
