@@ -17,6 +17,8 @@
   -fx-border-radius: 0;
   -fx-background-radius: 0;
   -fx-background-color: gainsboro;
+  -fx-border-color: whitesmoke;
+  -fx-border-insets: -1px;
 }
 
 .bsp-button:hover {
@@ -27,10 +29,32 @@
   -fx-background-color: white;
 }
 
+.square {
+  -fx-border-radius: 0;
+  -fx-background-radius: 0;
+}
+
+.transparent_button {
+  -fx-background-color: rgba(0, 0, 0, 0);
+  -fx-text-fill: white;
+  -fx-font-weight: 800;
+  -fx-border-width: 2px;
+  -fx-border-insets: 5px;
+  -fx-border-color: white;
+}
+
 .inset-object {
   -fx-border-style: solid;
   -fx-border-color: gainsboro;
   -fx-background-color: white;
+}
+
+.shadow {
+  -fx-effect: dropshadow(gaussian, dimgray, 15, 0.1, 5, 5);
+}
+
+.small_shadow {
+  -fx-effect: dropshadow(gaussian, dimgray, 8, 0.1, 3, 3);
 }
 
 .debug {

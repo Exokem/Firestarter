@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import xkv.visual.Display;
 import xkv.visual.panels.DynamicResizeable;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,8 @@ public class Firestarter extends Application
     private static final String TITLE = "Firestarter";
 
     public static final Logger OUTPUT = Logger.getLogger(TITLE);
+
+    public static final Set<String> STYLESHEETS = new HashSet<>();
 
     @Override
     public void start(Stage stage) throws Exception

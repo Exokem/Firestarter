@@ -4,6 +4,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import xkv.Firestarter;
 import xkv.processes.Warning;
 
@@ -31,13 +33,20 @@ public class VisualResourceLoader
             {
                 Firestarter.OUTPUT.log(Level.INFO, "Loading stylesheet: " + url.getPath());
 
-                scene.getStylesheets().add(convertURL(url));
+                String converted = convertURL(url);
+
+                scene.getStylesheets().add(converted);
+                Firestarter.STYLESHEETS.add(converted);
             }
         } catch (MalformedURLException ignored)
         {
 
         }
     }
+
+    public static Image DEFAULT_IMAGE = loadImage(ResourceHeader.ALBUM_ICONS, "test4.png");
+
+    public static FileChooser.ExtensionFilter IMAGES = new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", ".jpeg");
 
     public static Image loadImage(ResourceHeader resourceHeader, String identifier)
     {
@@ -51,6 +60,25 @@ public class VisualResourceLoader
         catch (NullPointerException | MalformedURLException | AssertionError exc)
         {
             Firestarter.OUTPUT.log(Level.WARNING, Warning.Header.VRL_ERR + Warning.Content.INVALID_URL);
+            return null;
+        }
+    }
+
+    public static Image selectImageDialog(Stage stage, String title)
+    {
+        FileChooser imageSelector = new FileChooser();
+
+        imageSelector.setTitle(title);
+        imageSelector.getExtensionFilters().add(IMAGES);
+
+        File imageFile = imageSelector.showOpenDialog(stage);
+
+        try
+        {
+            return new Image(imageFile.toURI().toURL().toString());
+        }
+        catch (MalformedURLException m)
+        {
             return null;
         }
     }
