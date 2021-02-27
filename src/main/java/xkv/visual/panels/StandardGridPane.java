@@ -1,6 +1,8 @@
 package xkv.visual.panels;
 
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
 import xkv.visual.css.IStylable;
 
@@ -35,6 +37,21 @@ public class StandardGridPane extends GridPane implements IStylable
 
                 this.add(rect, col, row);
             }
+        }
+    }
+
+    public void add(Node child, int columnIndex, int rowIndex, Priority... expansionPriorities)
+    {
+        super.add(child, columnIndex, rowIndex);
+
+        try
+        {
+            GridPane.setHgrow(child, expansionPriorities[0]);
+            GridPane.setVgrow(child, expansionPriorities[1]);
+        }
+        catch (IndexOutOfBoundsException | NullPointerException ignored)
+        {
+
         }
     }
 }

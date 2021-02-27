@@ -1,5 +1,7 @@
 package xkv.visual.panels;
 
+import javafx.scene.Node;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
 import xkv.visual.controls.MultiButton;
 import xkv.visual.css.Style;
@@ -15,9 +17,17 @@ public class PanelFactory
      * @param rows The number of rows in the grid.
      * @param styles All of the styles that should be applied to the grid.
      */
-    public static StandardGridPane paddedGrid(int gap, int columns, int rows, Style... styles)
+    @Deprecated public static StandardGridPane paddedGrid(int gap, int columns, int rows, Style... styles)
     {
         StandardGridPane pane = new StandardGridPane(gap, columns, rows);
+        pane.addVisualStyle(styles);
+
+        return pane;
+    }
+
+    public static StandardGridPane autoPaddedGrid(int gap, int innerColumns, int innerRows, Style... styles)
+    {
+        StandardGridPane pane = new StandardGridPane(gap, innerColumns + 2, innerRows + 2);
         pane.addVisualStyle(styles);
 
         return pane;
@@ -26,5 +36,17 @@ public class PanelFactory
     public static StandardScrollPanel<MultiButton> multiButtonScrollPanel()
     {
         return new StandardScrollPanel<>();
+    }
+
+    public static BorderPane styledBorderPane(Node center, Style... styles)
+    {
+        BorderPane pane = new BorderPane(center);
+
+        for (Style style : styles)
+        {
+            pane.getStyleClass().add(style.style());
+        }
+
+        return pane;
     }
 }
