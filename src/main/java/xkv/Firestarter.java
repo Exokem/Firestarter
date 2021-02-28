@@ -30,6 +30,8 @@ public class Firestarter extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
+        ResourceLoader.loadResources();
+
         firestarter = stage;
 
         Display.initialize(stage);

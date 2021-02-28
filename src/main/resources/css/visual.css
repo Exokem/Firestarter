@@ -34,6 +34,14 @@
   -fx-background-radius: 0;
 }
 
+.transparent {
+  -fx-background-color: rgba(0, 0, 0, 0);
+}
+
+.highlight_button {
+  -fx-background-color: white;
+}
+
 .transparent_button {
   -fx-background-color: rgba(0, 0, 0, 0);
   -fx-text-fill: white;

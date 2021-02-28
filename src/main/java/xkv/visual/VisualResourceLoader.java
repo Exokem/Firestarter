@@ -98,7 +98,7 @@ public class VisualResourceLoader
 
     public static enum ResourceHeader
     {
-        ALBUM_ICONS("icon/album/");
+        ALBUM_ICONS("icon/album/"), UI_BUTTONS("assets/ui/buttons/");
 
         String header;
 
