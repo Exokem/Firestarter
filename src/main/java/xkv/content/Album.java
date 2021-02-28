@@ -3,7 +3,6 @@ package xkv.content;
 import javafx.scene.image.Image;
 import xkv.visual.VisualResourceLoader;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class Album
         return identifier;
     }
 
-    public Album image(Image image)
+    public Album configureImage(Image image)
     {
         if (image != null)
         {
