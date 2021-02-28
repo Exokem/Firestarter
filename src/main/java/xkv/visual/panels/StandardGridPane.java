@@ -54,4 +54,19 @@ public class StandardGridPane extends GridPane implements IStylable
 
         }
     }
+
+    public void add(Node child, int columnIndex, int rowIndex, int colSpan, int rowSpan, Priority... expansionPriorities)
+    {
+        super.add(child, columnIndex, rowIndex, colSpan, rowSpan);
+
+        try
+        {
+            GridPane.setHgrow(child, expansionPriorities[0]);
+            GridPane.setVgrow(child, expansionPriorities[1]);
+        }
+        catch (IndexOutOfBoundsException | NullPointerException ignored)
+        {
+
+        }
+    }
 }

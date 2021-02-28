@@ -1,6 +1,7 @@
 package xkv.visual.panels;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
 import xkv.visual.controls.MultiButton;
@@ -31,6 +32,13 @@ public class PanelFactory
         pane.addVisualStyle(styles);
 
         return pane;
+    }
+
+    public static StandardScrollPanel<Button> buttonScrollPanel(Style... styles)
+    {
+        StandardScrollPanel<Button> panel = new StandardScrollPanel<>();
+        panel.addVisualStyle(styles);
+        return panel;
     }
 
     public static StandardScrollPanel<MultiButton> multiButtonScrollPanel()

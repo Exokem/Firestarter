@@ -26,8 +26,6 @@ public class StandardScrollPanel<I extends Node> extends ScrollPane implements I
     {
         this.itemGrid = PanelFactory.paddedGrid(0, 3, slates + 2, Style.INSET);
 
-        this.addVisualStyle(Style.INSET);
-
         // Allow contents to use entire space
         this.setFitToWidth(true);
         this.setFitToHeight(true);
@@ -68,12 +66,6 @@ public class StandardScrollPanel<I extends Node> extends ScrollPane implements I
     public boolean container()
     {
         return true;
-    }
-
-    @Override
-    public List<Style> itemStyles()
-    {
-        return itemStyles;
     }
 
     @Override

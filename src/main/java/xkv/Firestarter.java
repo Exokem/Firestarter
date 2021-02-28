@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import xkv.visual.Display;
@@ -24,9 +25,13 @@ public class Firestarter extends Application
 
     public static final Set<String> STYLESHEETS = new HashSet<>();
 
+    public static Stage firestarter;
+
     @Override
     public void start(Stage stage) throws Exception
     {
+        firestarter = stage;
+
         Display.initialize(stage);
 
         Scene main = new Scene(Display.format());
@@ -40,5 +45,19 @@ public class Firestarter extends Application
 
         main.widthProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(DynamicResizeable::resizeAll));
         main.heightProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(DynamicResizeable::resizeAll));
+    }
+
+    public static Stage subsidiary(String title, Parent root)
+    {
+        Stage subsidiaryStage = new Stage();
+        Scene scene = new Scene(root);
+
+        STYLESHEETS.forEach(sheet -> scene.getStylesheets().add(sheet));
+
+        subsidiaryStage.setTitle(title);
+        subsidiaryStage.initOwner(firestarter);
+        subsidiaryStage.setScene(scene);
+
+        return subsidiaryStage;
     }
 }

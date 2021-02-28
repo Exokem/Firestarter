@@ -15,4 +15,10 @@ public enum Style
     {
         return this.style;
     }
+
+    @Override
+    public String toString()
+    {
+        return style;
+    }
 }
