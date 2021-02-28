@@ -18,6 +18,8 @@ public class StyledImageView extends ImageView implements IStylable
 
     public void configureHover(final Image normal, final Image hovered)
     {
+        this.setPickOnBounds(true);
+
         this.hoverProperty().addListener((observable, wasHovered, isHovered) ->
         {
             if (isHovered)
