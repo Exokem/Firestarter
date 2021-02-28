@@ -13,6 +13,11 @@ public class StyledButton extends Button implements IStylable
         super(text);
     }
 
+    public StyledButton()
+    {
+
+    }
+
     public StyledButton square(double width)
     {
         setPrefWidth(width);
@@ -23,7 +28,7 @@ public class StyledButton extends Button implements IStylable
 
     public StyledButton animate()
     {
-        this.setSkin(new FadeButtonSkin(this));
+        this.setSkin(FadeButtonSkin.fadeCycle(this));
 
         return this;
     }

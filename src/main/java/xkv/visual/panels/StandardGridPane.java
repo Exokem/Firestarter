@@ -1,9 +1,13 @@
 package xkv.visual.panels;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
+import xkv.visual.controls.StyledButton;
 import xkv.visual.css.IStylable;
 
 public class StandardGridPane extends GridPane implements IStylable
@@ -68,5 +72,23 @@ public class StandardGridPane extends GridPane implements IStylable
         {
 
         }
+    }
+
+    public StyledButton addImageButton(ImageView imageHolder, int columnIndex, int rowIndex, Priority... expansionPriorities)
+    {
+        return addImageButton(imageHolder, columnIndex, rowIndex, 1, 1, expansionPriorities);
+    }
+
+    public StyledButton addImageButton(ImageView imageHolder, int columnIndex, int rowIndex, int colSpan, int rowSpan, Priority... expansionPriorities)
+    {
+        StyledButton button = new StyledButton();
+
+        button.setPrefWidth(imageHolder.getFitWidth());
+        button.setPrefHeight(imageHolder.getFitWidth());
+
+        add(imageHolder, columnIndex, rowIndex, colSpan, rowSpan, expansionPriorities);
+        add(button, columnIndex, rowIndex, colSpan, rowSpan, expansionPriorities);
+
+        return button;
     }
 }

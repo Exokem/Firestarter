@@ -1,5 +1,6 @@
 package xkv.visual.panels;
 
+import javafx.application.Platform;
 import javafx.scene.layout.Region;
 
 import javax.swing.text.html.ImageView;
@@ -53,6 +54,7 @@ public class DynamicResizeable
 
     public static void addResizeListener(Runnable resizeFunction)
     {
+        Platform.runLater(resizeFunction);
         EXTRA_LISTENERS.add(resizeFunction);
     }
 

@@ -7,23 +7,26 @@ import javafx.util.Duration;
 
 public class FadeButtonSkin extends ButtonSkin
 {
-    /**
-     * Creates a new ButtonSkin instance, installing the necessary child
-     * nodes into the Control {@link Control#getChildren() children} list, as
-     * well as the necessary input mappings for handling key, mouse, etc events.
-     *
-     * @param control The control that this skin should be installed onto.
-     */
     public FadeButtonSkin(Button control)
     {
         super(control);
+    }
 
-        FadeTransition in = new FadeTransition(Duration.millis(400), control);
+    public static FadeButtonSkin fadeCycle(Button control)
+    {
+        return fadeCycle(control, 400, 1, 0);
+    }
+
+    public static FadeButtonSkin fadeCycle(Button control, double duration, double toValue, double fromValue)
+    {
+        FadeButtonSkin fade = new FadeButtonSkin(control);
+
+        FadeTransition in = new FadeTransition(Duration.millis(duration), control);
         in.setNode(control);
-        in.setFromValue(0);
-        in.setToValue(1);
+        in.setFromValue(fromValue);
+        in.setToValue(toValue);
 
-        control.setOpacity(0);
+        control.setOpacity(fromValue);
 
         control.hoverProperty().addListener(((observable, oldValue, newValue) ->
         {
@@ -38,5 +41,7 @@ public class FadeButtonSkin extends ButtonSkin
 
             in.play();
         }));
+
+        return fade;
     }
 }
