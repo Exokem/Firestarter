@@ -1,12 +1,11 @@
 package xkv.visual;
 
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import xkv.visual.panels.AudionPanel;
+import xkv.visual.panels.audion.AudionPanel;
 
 import static xkv.visual.css.PanelApplicators.applyInset;
 
