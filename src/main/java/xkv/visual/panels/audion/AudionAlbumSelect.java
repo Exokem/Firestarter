@@ -28,42 +28,56 @@ public class AudionAlbumSelect
 {
     private static final double SCALE = 0.195D;
 
-    protected static final double REFERENCE = 1240;
+    protected static final double REFERENCE = AudionPanel.PANEL_WIDTH;
 
-    protected static StandardScrollPanel<Button> albumList = albumList(REFERENCE);
+    protected static final StandardScrollPanel<Button> ALBUM_LIST = albumList();
 
-    private static StandardScrollPanel<Button> albumList(double reference)
+    private static StandardScrollPanel<Button> albumList()
     {
-        StandardScrollPanel<Button> albums = PanelFactory.buttonScrollPanel().width(SCALE * reference);
+        StandardScrollPanel<Button> albums = PanelFactory.buttonScrollPanel().width(SCALE * REFERENCE);
         GridPane.setVgrow(albums, Priority.ALWAYS);
 
         return albums;
     }
 
-    protected static StyledButton albumProvider(double reference)
+    protected static StyledButton albumProvider()
     {
         StyledButton button = new StyledButton("New Album");
 
-        button.setPrefWidth(SCALE * reference);
-        button.setOnAction((actionEvent) -> newAlbum(reference));
+        button.setPrefWidth(SCALE * REFERENCE);
+        button.setOnAction((actionEvent) -> newAlbum());
 
         return button;
     }
 
-    protected static void newAlbum(double reference)
+    /**
+     * <p> Opens a new album creation window. </p><br>
+     *
+     * <h3> Hierarchy </h3>
+     *
+     * <p> The Prompt Container Overarch contains all first-level components necessary to the album creation display. </p>
+     * <p>
+     *     The Content Container insets second-level content into the overarch. This includes the image preview and
+     *     selection, as well as the entire Detail Container.
+     * </p>
+     * <p>
+     *     The Detail Container contains non-visual user-input components. This includes the album title input, and the
+     *     'done' button to finalize album creation.
+     * </p>
+     */
+    protected static void newAlbum()
     {
-        final double altDim = SCALE / 2 * reference;
+        final double altDim = SCALE / 2 * REFERENCE;
 
-        /// Grid Cascades
-        StandardGridPane promptContainer = PanelFactory.autoPaddedGrid(10, 1, 1);
+        StandardGridPane detailContainer = PanelFactory.autoPaddedGrid(10, 2, 6, Style.INSET);
         StandardGridPane contentContainer = PanelFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
-        StandardGridPane detailsContainer = PanelFactory.autoPaddedGrid(10, 2, 6, Style.INSET);
+        StandardGridPane promptContainer = PanelFactory.autoPaddedGrid(10, 1, 1);
 
         String defaultTitle = String.format("Album %d", albums.size() + 1);
         Stage promptStage = Firestarter.subsidiary(defaultTitle, promptContainer);
 
         /// Image Selection
-        /// A BorderPane contains the ImageView so that it can be styled.
+
         ImageView imageHolder = new ImageView(DEFAULT_IMAGE);
         BorderPane imageContainer = PanelFactory.styledBorderPane(imageHolder, Style.SMALL_SHADOW);
         VisualResourceLoader.scaleImageView(imageHolder, altDim);
@@ -86,26 +100,26 @@ public class AudionAlbumSelect
 
         title.setMinWidth(Region.USE_PREF_SIZE);
         titleInput.textProperty().addListener(listener -> promptStage.setTitle(titleInput.getText()));
-        titleInput.setPrefWidth(SCALE * reference);
+        titleInput.setPrefWidth(SCALE * REFERENCE);
         done.setPrefWidth(altDim);
         done.setOnAction(value ->
         {
-            Album album = Album.empty(titleInput.getText()).image(imageHolder.getImage());
+            Album album = Album.empty(titleInput.getText()).configureImage(imageHolder.getImage());
 
             addAlbum(album);
 
             promptStage.close();
         });
 
+        /// Grid Cascades
+
+        detailContainer.add(title, 1, 1);
+        detailContainer.add(titleInput, 2, 1, Priority.SOMETIMES);
+        detailContainer.add(done, 2, 6);
+
         contentContainer.add(imageContainer, 1, 1);
         contentContainer.add(imageSelect, 1, 1);
-        contentContainer.add(detailsContainer, 2, 1, Priority.ALWAYS);
-
-//            detailsContainer.addVisualStyle(Style.DEBUG);
-
-        detailsContainer.add(title, 1, 1);
-        detailsContainer.add(titleInput, 2, 1, Priority.SOMETIMES);
-        detailsContainer.add(done, 2, 6);
+        contentContainer.add(detailContainer, 2, 1, Priority.ALWAYS);
 
         promptContainer.add(contentContainer, 1, 1, Priority.ALWAYS, Priority.ALWAYS);
 
