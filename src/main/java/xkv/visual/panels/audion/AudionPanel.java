@@ -24,7 +24,7 @@ public class AudionPanel extends StandardGridPane implements IStylable
 
     private final DynamicResizeable root;
 
-    protected static final double PANEL_WIDTH = 1280;
+    public static final double PANEL_WIDTH = 1280;
     private static final double panelHeight = 760;
 
     private AudionPanel()
@@ -44,23 +44,26 @@ public class AudionPanel extends StandardGridPane implements IStylable
         CONTENT_OVERARCH.add(AudionAlbumSelect.albumProvider(), 1, 1);
         CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_LIST, 1, 2);
 
-        CONTENT_OVERARCH.add(AudionAlbumView.ALBUM_CONTENT_PANEL, 2, 1, 1, 2);
+        CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 2, Priority.SOMETIMES);
 
         this.add(CONTENT_OVERARCH, 1, 1);
     }
 
     protected static final List<Album> albums = new ArrayList<>();
 
-    protected static void addAlbum(Album album)
+    protected static StyledButton addAlbum(Album album)
     {
-        StyledButton button = new StyledButton(album.identifier());
+        StyledButton button = new StyledButton(album.displayName());
 
         button.setMaxWidth(Double.MAX_VALUE);
         button.setMinHeight(panelHeight / 20);
-        button.setOnAction(value -> AudionAlbumView.openAlbum(album));
+        button.setOnAction(value -> AudionAlbumView.openAlbum(button, album));
 
-        AudionAlbumSelect.ALBUM_LIST.addItem(button);
         albums.add(album);
+
+        AudionAlbumSelect.ALBUM_LIST.link(button, album);
+
+        return button;
     }
 
     protected double scaledWidth(double scale)

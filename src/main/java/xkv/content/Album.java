@@ -2,6 +2,7 @@ package xkv.content;
 
 import javafx.scene.image.Image;
 import xkv.visual.VisualResourceLoader;
+import xkv.visual.images.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +11,16 @@ public class Album
 {
     private final List<Track> tracks = new ArrayList<>();
 
-    protected String identifier;
+    protected final String identifier;
+
+    protected String displayName;
 
     protected Image image;
 
     protected Album(String identifier)
     {
         this.identifier = identifier;
+        this.displayName = identifier;
     }
 
     public static Album empty(String identifier)
@@ -34,9 +38,9 @@ public class Album
         return image;
     }
 
-    public String identifier()
+    public String displayName()
     {
-        return identifier;
+        return displayName;
     }
 
     public Album configureImage(Image image)
@@ -53,6 +57,11 @@ public class Album
         return this;
     }
 
+    public void rename(String newIdentifier)
+    {
+        this.displayName = newIdentifier;
+    }
+
     public long totalDuration()
     {
         long total = 0;
@@ -65,14 +74,28 @@ public class Album
         return total;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return identifier.hashCode();
+    }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Album)
+        {
+            Album other = (Album) obj;
 
-//    public String formatDuration()
-//    {
-//        long duration = totalDuration();
-//
-//
-//    }
+            if (other.identifier.equals(this.identifier))
+            {
+                if (other.tracks.equals(this.tracks))
+                {
+                    return ImageUtil.areImagesEqual(other.image, this.image);
+                }
+            }
+        }
 
-
+        return false;
+    }
 }

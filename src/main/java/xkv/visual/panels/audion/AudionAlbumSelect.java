@@ -16,9 +16,9 @@ import xkv.content.Album;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
+import xkv.visual.panels.LinkedScrollPane;
 import xkv.visual.panels.PanelFactory;
 import xkv.visual.panels.StandardGridPane;
-import xkv.visual.panels.StandardScrollPanel;
 
 import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
 import static xkv.visual.panels.audion.AudionPanel.addAlbum;
@@ -30,11 +30,11 @@ public class AudionAlbumSelect
 
     protected static final double REFERENCE = AudionPanel.PANEL_WIDTH;
 
-    protected static final StandardScrollPanel<Button> ALBUM_LIST = albumList();
+    protected static final LinkedScrollPane<Button, Album> ALBUM_LIST = albumList();
 
-    private static StandardScrollPanel<Button> albumList()
+    private static LinkedScrollPane<Button, Album> albumList()
     {
-        StandardScrollPanel<Button> albums = PanelFactory.buttonScrollPanel().width(SCALE * REFERENCE);
+        LinkedScrollPane<Button, Album> albums = PanelFactory.linkedScrollPane().width(SCALE * REFERENCE);
         GridPane.setVgrow(albums, Priority.ALWAYS);
 
         return albums;
@@ -106,9 +106,11 @@ public class AudionAlbumSelect
         {
             Album album = Album.empty(titleInput.getText()).configureImage(imageHolder.getImage());
 
-            addAlbum(album);
+            StyledButton albumButton = addAlbum(album);
 
             promptStage.close();
+
+            AudionAlbumView.openAlbum(albumButton, album);
         });
 
         /// Grid Cascades
