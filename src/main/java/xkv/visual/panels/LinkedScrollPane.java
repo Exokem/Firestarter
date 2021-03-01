@@ -1,11 +1,14 @@
 package xkv.visual.panels;
 
 import javafx.scene.Node;
+import javafx.scene.layout.Region;
+import xkv.visual.css.Style;
+import xkv.visual.panels.audion.AudionPanel;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPanel<ITEM>
+public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPane<ITEM>
 {
     private final Map<ITEM, LINK> linker = new HashMap<>();
 
@@ -19,6 +22,15 @@ public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPan
     public void link(ITEM item, LINK link)
     {
         super.addItem(item);
+
+        if (item instanceof Region)
+        {
+            Region region = (Region) item;
+            region.setMaxWidth(Double.MAX_VALUE);
+            region.setMinHeight(AudionPanel.PANEL_HEIGHT / 20);
+
+            Style.apply(region, Style.SCROLLPANE_BUTTON, Style.SQUARE);
+        }
 
         linker.put(item, link);
         dualLinker.put(link, item);

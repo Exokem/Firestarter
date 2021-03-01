@@ -8,7 +8,7 @@ import xkv.content.Album;
 import xkv.visual.controls.MultiButton;
 import xkv.visual.css.Style;
 
-public class PanelFactory
+public class PaneFactory
 {
     /**
      * Provides a {@link StandardGridPane} containing empty {@link Rectangle} objects at each of its corner indices, such that
@@ -42,16 +42,16 @@ public class PanelFactory
         return scrollPane;
     }
 
-    public static StandardScrollPanel<Button> buttonScrollPanel(Style... styles)
+    public static StandardScrollPane<Button> buttonScrollPanel(Style... styles)
     {
-        StandardScrollPanel<Button> panel = new StandardScrollPanel<>();
+        StandardScrollPane<Button> panel = new StandardScrollPane<>();
         panel.addVisualStyle(styles);
         return panel;
     }
 
-    public static StandardScrollPanel<MultiButton> multiButtonScrollPanel()
+    public static StandardScrollPane<MultiButton> multiButtonScrollPanel()
     {
-        return new StandardScrollPanel<>();
+        return new StandardScrollPane<>();
     }
 
     public static BorderPane styledBorderPane(Node center, Style... styles)

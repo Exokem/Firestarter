@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StandardScrollPanel<I extends Node> extends ScrollPane implements IStylable
+public class StandardScrollPane<I extends Node> extends ScrollPane implements IStylable
 {
     private static final int DEFAULT_SLATES = 10;
 
@@ -22,14 +22,14 @@ public class StandardScrollPanel<I extends Node> extends ScrollPane implements I
 
     private final GridPane itemGrid;
 
-    protected StandardScrollPanel()
+    protected StandardScrollPane()
     {
         this(DEFAULT_SLATES);
     }
 
-    protected StandardScrollPanel(int slates)
+    protected StandardScrollPane(int slates)
     {
-        this.itemGrid = PanelFactory.paddedGrid(0, 3, slates + 2, Style.INSET);
+        this.itemGrid = PaneFactory.autoPaddedGrid(0, 1, slates, Style.WHITE);
 
         // Allow contents to use entire space
         this.setFitToWidth(true);
@@ -84,7 +84,7 @@ public class StandardScrollPanel<I extends Node> extends ScrollPane implements I
         return items.get(0);
     }
 
-    public StandardScrollPanel<I> width(double width)
+    public StandardScrollPane<I> width(double width)
     {
         this.setPrefWidth(width);
 

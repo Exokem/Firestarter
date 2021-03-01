@@ -7,7 +7,7 @@ import xkv.visual.controls.StyledButton;
 import xkv.visual.css.IStylable;
 import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
-import xkv.visual.panels.PanelFactory;
+import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ public class AudionPanel extends StandardGridPane implements IStylable
         return new AudionPanel();
     }
 
-    protected static final StandardGridPane CONTENT_OVERARCH = PanelFactory.paddedGrid(10, 4, 4, Style.INSET);
+    protected static final StandardGridPane CONTENT_OVERARCH = PaneFactory.paddedGrid(10, 4, 4, Style.INSET);
 
     private final DynamicResizeable root;
 
     protected static int createdAlbums = 0;
 
     public static final double PANEL_WIDTH = 1280;
-    private static final double panelHeight = 760;
+    public static final double PANEL_HEIGHT = 760;
 
     private AudionPanel()
     {
@@ -41,7 +41,7 @@ public class AudionPanel extends StandardGridPane implements IStylable
         GridPane.setVgrow(CONTENT_OVERARCH, Priority.ALWAYS);
 
         CONTENT_OVERARCH.setPrefWidth(PANEL_WIDTH);
-        CONTENT_OVERARCH.setPrefHeight(panelHeight);
+        CONTENT_OVERARCH.setPrefHeight(PANEL_HEIGHT);
 
         CONTENT_OVERARCH.add(AudionAlbumSelect.albumProvider(), 1, 1);
         CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_LIST, 1, 2);
@@ -57,8 +57,6 @@ public class AudionPanel extends StandardGridPane implements IStylable
     {
         StyledButton button = new StyledButton(album.displayName());
 
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMinHeight(panelHeight / 20);
         button.setOnAction(value -> AudionAlbumView.openAlbum(button, album));
 
         albums.add(album);

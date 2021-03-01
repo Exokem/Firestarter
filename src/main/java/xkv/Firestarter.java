@@ -15,7 +15,7 @@ import xkv.visual.Display;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
-import xkv.visual.panels.PanelFactory;
+import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 import xkv.visual.panels.audion.AudionPanel;
 
@@ -74,8 +74,8 @@ public class Firestarter extends Application
 
     public static Stage renameWindow(String title, String currentName, Consumer<String>... renameFunctions)
     {
-        StandardGridPane layout = PanelFactory.autoPaddedGrid(10, 2, 2, Style.INSET);
-        StandardGridPane container = PanelFactory.autoPaddedGrid(10, 1, 1);
+        StandardGridPane layout = PaneFactory.autoPaddedGrid(10, 2, 2, Style.INSET);
+        StandardGridPane container = PaneFactory.autoPaddedGrid(10, 1, 1);
 
         Stage subsidiaryStage = subsidiary(title, container);
 

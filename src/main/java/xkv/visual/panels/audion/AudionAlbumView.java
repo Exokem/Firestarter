@@ -14,12 +14,14 @@ import javafx.stage.Stage;
 import xkv.Firestarter;
 import xkv.ResourceLoader;
 import xkv.content.Album;
+import xkv.content.Track;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
 import xkv.visual.images.StyledImageView;
 import xkv.visual.panels.DynamicResizeable;
-import xkv.visual.panels.PanelFactory;
+import xkv.visual.panels.LinkedScrollPane;
+import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
 import static xkv.ResourceLoader.*;
@@ -29,7 +31,7 @@ public class AudionAlbumView
 {
     private static final ImageView imageHolder = new ImageView();
 
-    private static Album activeAlbum;
+    private static Album activeAlbum = Album.empty("");
     private static Button albumButton;
 
     private static final StandardGridPane EMPTY_PANEL = emptyPanel();
@@ -76,6 +78,8 @@ public class AudionAlbumView
         activeAlbum = album;
 
         ALBUM_CONTENT_PANEL.setCenter(ALBUM_VIEW);
+
+        updateAlbumDetails();
     }
 
     protected static void deleteAlbum(Album album)
@@ -104,12 +108,9 @@ public class AudionAlbumView
         GridPane.setHalignment(create, HPos.CENTER);
         GridPane.setValignment(create, VPos.TOP);
 
-        create.setOnAction(value ->
-        {
-            AudionAlbumSelect.newAlbum();
-        });
+        create.setOnAction(value -> AudionAlbumSelect.newAlbum());
 
-        StandardGridPane emptyPanel = PanelFactory.autoPaddedGrid(10, 1, 2, Style.INSET);
+        StandardGridPane emptyPanel = PaneFactory.autoPaddedGrid(10, 1, 2, Style.INSET);
 
         emptyPanel.add(empty, 1, 1, Priority.ALWAYS, Priority.SOMETIMES);
         emptyPanel.add(create, 1, 2, Priority.ALWAYS, Priority.SOMETIMES);
@@ -119,7 +120,7 @@ public class AudionAlbumView
 
     private static StandardGridPane albumView()
     {
-        StandardGridPane albumView = PanelFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
+        StandardGridPane albumView = PaneFactory.autoPaddedGrid(10, 3, 2, Style.INSET);
         GridPane.setHgrow(albumView, Priority.SOMETIMES);
 
         VisualResourceLoader.scaleImageView(imageHolder, 0.20D * REFERENCE);
@@ -128,12 +129,46 @@ public class AudionAlbumView
         imageHolder.maxWidth(albumView.getWidth());
         imageHolder.maxHeight(albumView.getHeight());
 
-        BorderPane imageContainer = PanelFactory.styledBorderPane(imageHolder);
+        BorderPane imageContainer = PaneFactory.styledBorderPane(imageHolder);
 
         albumView.add(imageContainer, 1, 1);
         albumView.add(albumOptions(), 2, 1);
+        albumView.add(albumDetails(), 3, 1, Priority.ALWAYS);
+        albumView.add(trackList(), 1, 2, 3, 1, Priority.ALWAYS, Priority.ALWAYS);
 
         return albumView;
+    }
+
+    private static Label albumTitle, albumSpan;
+
+    private static void updateAlbumDetails()
+    {
+        if (activeAlbum != null)
+        {
+            albumTitle.setText(activeAlbum.displayName());
+            albumSpan.setText(activeAlbum.formattedSpan());
+        }
+    }
+
+    private static StandardGridPane albumDetails()
+    {
+        StandardGridPane albumDetails = PaneFactory.autoPaddedGrid(10, 1, 3, Style.INSET);
+
+        Label blank = new Label("");
+        albumTitle = new Label("Test Title");
+        albumSpan = new Label("Test Span");
+
+        GridPane.setValignment(blank, VPos.BOTTOM);
+        GridPane.setValignment(albumSpan, VPos.TOP);
+
+        albumDetails.add(blank, 1, 1, Priority.ALWAYS, Priority.SOMETIMES);
+        albumDetails.add(albumTitle, 1, 2, Priority.ALWAYS);
+        albumDetails.add(albumSpan, 1, 3, Priority.ALWAYS, Priority.SOMETIMES);
+
+        Style.apply(albumTitle, Style.TITLE_BOLD);
+        Style.apply(albumSpan, Style.SUBTITLE);
+
+        return albumDetails;
     }
 
     private static StandardGridPane albumOptions()
@@ -181,12 +216,27 @@ public class AudionAlbumView
             }
         });
 
-        StandardGridPane albumOptions = PanelFactory.autoPaddedGrid(10, 1, 3, Style.INSET);
+        StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 3, Style.INSET);
 
         albumOptions.add(deleteIcon, 1, 1);
         albumOptions.add(imageSelect, 1, 2);
         albumOptions.add(albumRename, 1, 3);
 
         return albumOptions;
+    }
+
+    public static LinkedScrollPane<Button, Track> trackList()
+    {
+        LinkedScrollPane<Button, Track> trackList = new LinkedScrollPane<>();
+        trackList.addVisualStyle(Style.INSET);
+
+        for (int indx = 0; indx < 20; indx++)
+        {
+            Button track = new Button("test");
+
+            trackList.link(track, Track.empty());
+        }
+
+        return trackList;
     }
 }

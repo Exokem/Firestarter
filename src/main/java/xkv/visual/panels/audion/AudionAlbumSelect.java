@@ -17,7 +17,7 @@ import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
 import xkv.visual.panels.LinkedScrollPane;
-import xkv.visual.panels.PanelFactory;
+import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
 import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
@@ -34,7 +34,7 @@ public class AudionAlbumSelect
 
     private static LinkedScrollPane<Button, Album> albumList()
     {
-        LinkedScrollPane<Button, Album> albums = PanelFactory.linkedScrollPane().width(SCALE * REFERENCE);
+        LinkedScrollPane<Button, Album> albums = PaneFactory.linkedScrollPane().width(SCALE * REFERENCE);
         GridPane.setVgrow(albums, Priority.ALWAYS);
 
         return albums;
@@ -69,9 +69,9 @@ public class AudionAlbumSelect
     {
         final double altDim = SCALE / 2 * REFERENCE;
 
-        StandardGridPane detailContainer = PanelFactory.autoPaddedGrid(10, 2, 6, Style.INSET);
-        StandardGridPane contentContainer = PanelFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
-        StandardGridPane promptContainer = PanelFactory.autoPaddedGrid(10, 1, 1);
+        StandardGridPane detailContainer = PaneFactory.autoPaddedGrid(10, 2, 6, Style.INSET);
+        StandardGridPane contentContainer = PaneFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
+        StandardGridPane promptContainer = PaneFactory.autoPaddedGrid(10, 1, 1);
 
         String defaultTitle = String.format("Album %d", createdAlbums + 1);
         Stage promptStage = Firestarter.subsidiary(defaultTitle, promptContainer);
@@ -79,7 +79,7 @@ public class AudionAlbumSelect
         /// Image Selection
 
         ImageView imageHolder = new ImageView(DEFAULT_IMAGE);
-        BorderPane imageContainer = PanelFactory.styledBorderPane(imageHolder, Style.SMALL_SHADOW);
+        BorderPane imageContainer = PaneFactory.styledBorderPane(imageHolder, Style.SMALL_SHADOW);
         VisualResourceLoader.scaleImageView(imageHolder, altDim);
         StyledButton imageSelect = new StyledButton("Select Image").square(altDim).animate();
 
