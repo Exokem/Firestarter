@@ -7,7 +7,8 @@ import javafx.scene.layout.Priority;
 import xkv.visual.css.IStylable;
 import xkv.visual.css.Style;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandardScrollPanel<I extends Node> extends ScrollPane implements IStylable
 {
@@ -51,6 +52,17 @@ public class StandardScrollPanel<I extends Node> extends ScrollPane implements I
         this.items.add(item);
 
         this.itemGrid.add(item, 1, indx);
+    }
+
+    public void remove(I item)
+    {
+        this.items.remove(item);
+        this.itemGrid.getChildren().remove(item);
+    }
+
+    public I top()
+    {
+        return items.get(0);
     }
 
     public StandardScrollPanel<I> width(double width)

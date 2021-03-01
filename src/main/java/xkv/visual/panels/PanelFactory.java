@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
+import xkv.content.Album;
 import xkv.visual.controls.MultiButton;
 import xkv.visual.css.Style;
 
@@ -32,6 +33,13 @@ public class PanelFactory
         pane.addVisualStyle(styles);
 
         return pane;
+    }
+
+    public static LinkedScrollPane<Button, Album> linkedScrollPane(Style... styles)
+    {
+        LinkedScrollPane<Button, Album> scrollPane = new LinkedScrollPane<>();
+        scrollPane.addVisualStyle(styles);
+        return scrollPane;
     }
 
     public static StandardScrollPanel<Button> buttonScrollPanel(Style... styles)
