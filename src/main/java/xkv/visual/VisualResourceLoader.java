@@ -3,7 +3,6 @@ package xkv.visual;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xkv.Firestarter;
@@ -77,7 +76,7 @@ public class VisualResourceLoader
         {
             return new Image(imageFile.toURI().toURL().toString());
         }
-        catch (MalformedURLException m)
+        catch (MalformedURLException | NullPointerException m)
         {
             return null;
         }

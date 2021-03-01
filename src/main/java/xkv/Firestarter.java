@@ -2,17 +2,26 @@ package xkv;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import xkv.visual.Display;
+import xkv.visual.controls.StyledButton;
+import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
+import xkv.visual.panels.PanelFactory;
+import xkv.visual.panels.StandardGridPane;
+import xkv.visual.panels.audion.AudionPanel;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 import static xkv.visual.VisualResourceLoader.loadCSS;
@@ -59,6 +68,41 @@ public class Firestarter extends Application
         subsidiaryStage.setTitle(title);
         subsidiaryStage.initOwner(firestarter);
         subsidiaryStage.setScene(scene);
+
+        return subsidiaryStage;
+    }
+
+    public static Stage renameWindow(String title, String currentName, Consumer<String>... renameFunctions)
+    {
+        StandardGridPane layout = PanelFactory.autoPaddedGrid(10, 2, 2, Style.INSET);
+        StandardGridPane container = PanelFactory.autoPaddedGrid(10, 1, 1);
+
+        Stage subsidiaryStage = subsidiary(title, container);
+
+        container.add(layout, 1, 1, Priority.ALWAYS, Priority.ALWAYS);
+
+        Label fieldLabel = new Label(title + ":");
+        TextField field = new TextField(currentName);
+        StyledButton rename = new StyledButton("Rename");
+        GridPane.setHalignment(rename, HPos.RIGHT);
+
+        fieldLabel.setMinWidth(Region.USE_PREF_SIZE);
+
+        rename.setPrefWidth(0.1D * AudionPanel.PANEL_WIDTH);
+
+        rename.setOnAction(value ->
+        {
+            for (Consumer<String> renameFunction : renameFunctions)
+            {
+                renameFunction.accept(field.getText());
+            }
+
+            subsidiaryStage.close();
+        });
+
+        layout.add(fieldLabel, 1, 1);
+        layout.add(field, 2, 1, Priority.SOMETIMES);
+        layout.add(rename, 2, 2);
 
         return subsidiaryStage;
     }
