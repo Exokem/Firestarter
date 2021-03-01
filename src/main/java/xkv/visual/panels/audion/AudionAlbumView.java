@@ -55,6 +55,7 @@ public class AudionAlbumView
         }
         else
         {
+            AudionPanel.createdAlbums = 0;
             ALBUM_CONTENT_PANEL.setCenter(EMPTY_PANEL);
         }
     }

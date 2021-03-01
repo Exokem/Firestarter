@@ -24,6 +24,8 @@ public class AudionPanel extends StandardGridPane implements IStylable
 
     private final DynamicResizeable root;
 
+    protected static int createdAlbums = 0;
+
     public static final double PANEL_WIDTH = 1280;
     private static final double panelHeight = 760;
 
@@ -62,6 +64,8 @@ public class AudionPanel extends StandardGridPane implements IStylable
         albums.add(album);
 
         AudionAlbumSelect.ALBUM_LIST.link(button, album);
+
+        createdAlbums ++;
 
         return button;
     }

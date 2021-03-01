@@ -22,7 +22,7 @@ import xkv.visual.panels.StandardGridPane;
 
 import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
 import static xkv.visual.panels.audion.AudionPanel.addAlbum;
-import static xkv.visual.panels.audion.AudionPanel.albums;
+import static xkv.visual.panels.audion.AudionPanel.createdAlbums;
 
 public class AudionAlbumSelect
 {
@@ -73,7 +73,7 @@ public class AudionAlbumSelect
         StandardGridPane contentContainer = PanelFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
         StandardGridPane promptContainer = PanelFactory.autoPaddedGrid(10, 1, 1);
 
-        String defaultTitle = String.format("Album %d", albums.size() + 1);
+        String defaultTitle = String.format("Album %d", createdAlbums + 1);
         Stage promptStage = Firestarter.subsidiary(defaultTitle, promptContainer);
 
         /// Image Selection
@@ -104,7 +104,8 @@ public class AudionAlbumSelect
         done.setPrefWidth(altDim);
         done.setOnAction(value ->
         {
-            Album album = Album.empty(titleInput.getText()).configureImage(imageHolder.getImage());
+            Album album = Album.empty(defaultTitle).configureImage(imageHolder.getImage());
+            album.configureDisplayName(titleInput.getText());
 
             StyledButton albumButton = addAlbum(album);
 

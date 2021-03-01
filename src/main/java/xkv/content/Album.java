@@ -2,7 +2,6 @@ package xkv.content;
 
 import javafx.scene.image.Image;
 import xkv.visual.VisualResourceLoader;
-import xkv.visual.images.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,11 @@ public class Album
     public String displayName()
     {
         return displayName;
+    }
+
+    public void configureDisplayName(String displayName)
+    {
+        this.displayName = displayName;
     }
 
     public Album configureImage(Image image)
@@ -89,10 +93,7 @@ public class Album
 
             if (other.identifier.equals(this.identifier))
             {
-                if (other.tracks.equals(this.tracks))
-                {
-                    return ImageUtil.areImagesEqual(other.image, this.image);
-                }
+                return other.tracks.equals(this.tracks);
             }
         }
 
