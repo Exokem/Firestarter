@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&family=IBM+Plex+Sans+Condensed:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&family=IBM+Plex+Serif:ital@0;1&display=swap');
+
 .area-button {
   -fx-background-radius: 0;
   -fx-border-radius: 0;
@@ -34,12 +37,35 @@
   -fx-background-radius: 0;
 }
 
+.title-bold {
+  -fx-font-weight: 800;
+  -fx-font-size: 50;
+  -fx-font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.subtitle {
+  -fx-font-weight: 400;
+  -fx-font-size: 12;
+  -fx-font-family: 'IBM Plex Sans', sans-serif;
+}
+
 .transparent {
   -fx-background-color: rgba(0, 0, 0, 0);
 }
 
 .highlight_button {
   -fx-background-color: white;
+}
+
+.scrollpane-button {
+  -fx-background-color: white;
+  -fx-border-color: gainsboro;
+  -fx-border-width: 1px;
+  -fx-border-insets: -1px;
+}
+
+.scrollpane-button:hover {
+  -fx-background-color: gainsboro;
 }
 
 .transparent_button {
@@ -54,6 +80,11 @@
 .inset-object {
   -fx-border-style: solid;
   -fx-border-color: gainsboro;
+  -fx-background-color: white;
+}
+
+.white {
+  -fx-border-color: white;
   -fx-background-color: white;
 }
 

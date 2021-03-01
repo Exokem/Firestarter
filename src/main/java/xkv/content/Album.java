@@ -1,14 +1,19 @@
 package xkv.content;
 
 import javafx.scene.image.Image;
+import xkv.util.Time;
 import xkv.visual.VisualResourceLoader;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Album
 {
     private final List<Track> tracks = new ArrayList<>();
+
+    private final Date created;
 
     protected final String identifier;
 
@@ -16,10 +21,13 @@ public class Album
 
     protected Image image;
 
+    protected long duration = 0;
+
     protected Album(String identifier)
     {
         this.identifier = identifier;
         this.displayName = identifier;
+        this.created = Date.from(Instant.now());
     }
 
     public static Album empty(String identifier)
@@ -42,9 +50,28 @@ public class Album
         return displayName;
     }
 
-    public void configureDisplayName(String displayName)
+    public String formattedDate()
     {
-        this.displayName = displayName;
+        return String.format("Created: %s", created.toString());
+    }
+
+    public String formattedInfo()
+    {
+        String info = String.format("%d tracks", tracks.size());
+
+        String time = Time.longToString(duration, false);
+
+        if (!time.isEmpty())
+        {
+            info = String.format("%s, %s", info, time);
+        }
+
+        return info;
+    }
+
+    public String formattedSpan()
+    {
+        return String.format("%s\n%s", formattedDate(), formattedInfo());
     }
 
     public Album configureImage(Image image)
@@ -61,21 +88,29 @@ public class Album
         return this;
     }
 
+    public void addTrack(Track track)
+    {
+
+    }
+
+    public void removeTrack(Track track)
+    {
+
+    }
+
+    public void removeTrack(int index)
+    {
+
+    }
+
+    public void configureDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
+
     public void rename(String newIdentifier)
     {
         this.displayName = newIdentifier;
-    }
-
-    public long totalDuration()
-    {
-        long total = 0;
-
-        for (Track track : tracks)
-        {
-            total += track.duration;
-        }
-
-        return total;
     }
 
     @Override

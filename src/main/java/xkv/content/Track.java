@@ -1,7 +1,5 @@
 package xkv.content;
 
-import xkv.visual.panels.DynamicResizeable;
-
 public class Track
 {
     protected String identifier, author;
@@ -9,6 +7,11 @@ public class Track
     protected int plays;
 
     protected long duration;
+
+    private Track()
+    {
+
+    }
 
     protected Track(String identifier, String author, long duration)
     {
@@ -21,5 +24,10 @@ public class Track
     public static Track compose(String identifier, String author, long duration)
     {
         return new Track(identifier, author, duration);
+    }
+
+    public static Track empty()
+    {
+        return new Track();
     }
 }
