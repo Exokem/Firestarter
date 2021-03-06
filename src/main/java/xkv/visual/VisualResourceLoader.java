@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xkv.Firestarter;
+import xkv.ResourceLoader.ResourceHeader;
 import xkv.processes.Warning;
 
 import java.io.File;
@@ -51,7 +52,7 @@ public class VisualResourceLoader
     {
         try
         {
-            URL sourceURL = Firestarter.class.getClassLoader().getResource(resourceHeader.header + identifier);
+            URL sourceURL = Firestarter.class.getClassLoader().getResource(resourceHeader.header() + identifier);
 
             assert sourceURL != null;
             return new Image(convertURL(sourceURL));
@@ -93,17 +94,5 @@ public class VisualResourceLoader
     public static String convertURL(URL url) throws MalformedURLException
     {
         return new File(url.getPath()).toURI().toURL().toString();
-    }
-
-    public static enum ResourceHeader
-    {
-        ALBUM_ICONS("icon/album/"), UI_BUTTONS("assets/ui/buttons/");
-
-        String header;
-
-        ResourceHeader(String header)
-        {
-            this.header = header;
-        }
     }
 }

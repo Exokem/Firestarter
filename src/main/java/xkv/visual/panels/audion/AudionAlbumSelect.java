@@ -40,10 +40,11 @@ public class AudionAlbumSelect
         return albums;
     }
 
-    protected static StyledButton albumProvider()
+    protected static Button albumProvider()
     {
         StyledButton button = new StyledButton("New Album");
 
+        button.addVisualStyle(Style.UI_BUTTON);
         button.setPrefWidth(SCALE * REFERENCE);
         button.setOnAction((actionEvent) -> newAlbum());
 
@@ -102,6 +103,7 @@ public class AudionAlbumSelect
         titleInput.textProperty().addListener(listener -> promptStage.setTitle(titleInput.getText()));
         titleInput.setPrefWidth(SCALE * REFERENCE);
         done.setPrefWidth(altDim);
+        done.addVisualStyle(Style.UI_BUTTON);
         done.setOnAction(value ->
         {
             Album album = Album.empty(defaultTitle).configureImage(imageHolder.getImage());

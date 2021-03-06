@@ -6,7 +6,6 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -20,18 +19,17 @@ import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
 import xkv.visual.images.StyledImageView;
 import xkv.visual.panels.DynamicResizeable;
-import xkv.visual.panels.LinkedScrollPane;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
+
+import java.util.Iterator;
 
 import static xkv.ResourceLoader.*;
 
 
 public class AudionAlbumView
 {
-    private static final ImageView imageHolder = new ImageView();
-
-    private static Album activeAlbum = Album.empty("");
+    private static Album activeAlbum;
     private static Button albumButton;
 
     private static final StandardGridPane EMPTY_PANEL = emptyPanel();
@@ -69,10 +67,7 @@ public class AudionAlbumView
 
     protected static void openAlbum(Button source, Album album)
     {
-        if (album.image() != null)
-        {
-            imageHolder.setImage(album.image());
-        }
+        ADN.IMAGE_VIEW.setImage(album.image());
 
         albumButton = source;
         activeAlbum = album;
@@ -90,7 +85,7 @@ public class AudionAlbumView
 
         activeAlbum = null;
         albumButton = null;
-        imageHolder.setImage(null);
+        ADN.IMAGE_VIEW.setImage(null);
 
         openFirstAlbum();
     }
@@ -109,6 +104,7 @@ public class AudionAlbumView
         GridPane.setValignment(create, VPos.TOP);
 
         create.setOnAction(value -> AudionAlbumSelect.newAlbum());
+        create.addVisualStyle(Style.UI_BUTTON);
 
         StandardGridPane emptyPanel = PaneFactory.autoPaddedGrid(10, 1, 2, Style.INSET);
 
@@ -123,18 +119,18 @@ public class AudionAlbumView
         StandardGridPane albumView = PaneFactory.autoPaddedGrid(10, 3, 2, Style.INSET);
         GridPane.setHgrow(albumView, Priority.SOMETIMES);
 
-        VisualResourceLoader.scaleImageView(imageHolder, 0.20D * REFERENCE);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(imageHolder, 0.20D * AudionPanel.CONTENT_OVERARCH.getWidth()));
+        VisualResourceLoader.scaleImageView(ADN.IMAGE_VIEW, 0.20D * REFERENCE);
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ADN.IMAGE_VIEW, 0.20D * AudionPanel.CONTENT_OVERARCH.getWidth()));
 
-        imageHolder.maxWidth(albumView.getWidth());
-        imageHolder.maxHeight(albumView.getHeight());
+        ADN.IMAGE_VIEW.maxWidth(albumView.getWidth());
+        ADN.IMAGE_VIEW.maxHeight(albumView.getHeight());
 
-        BorderPane imageContainer = PaneFactory.styledBorderPane(imageHolder);
+        BorderPane imageContainer = PaneFactory.styledBorderPane(ADN.IMAGE_VIEW);
 
         albumView.add(imageContainer, 1, 1);
         albumView.add(albumOptions(), 2, 1);
         albumView.add(albumDetails(), 3, 1, Priority.ALWAYS);
-        albumView.add(trackList(), 1, 2, 3, 1, Priority.ALWAYS, Priority.ALWAYS);
+        albumView.add(ADN.TRACK_VIEW, 1, 2, 3, 1, Priority.ALWAYS, Priority.ALWAYS);
 
         return albumView;
     }
@@ -147,6 +143,17 @@ public class AudionAlbumView
         {
             albumTitle.setText(activeAlbum.displayName());
             albumSpan.setText(activeAlbum.formattedSpan());
+
+            ADN.TRACK_VIEW.clear();
+
+            Iterator<Track> iterator = activeAlbum.iterator();
+
+            while (iterator.hasNext())
+            {
+                Track track = iterator.next();
+//                Button trackButton = new Button(track.identifier());
+                ADN.TRACK_VIEW.link(track.forDisplay(), track);
+            }
         }
     }
 
@@ -174,7 +181,7 @@ public class AudionAlbumView
     private static StandardGridPane albumOptions()
     {
         StyledImageView deleteIcon = new StyledImageView(DEL_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(deleteIcon, 0.1D * imageHolder.getFitHeight()));
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(deleteIcon, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
 
         deleteIcon.configureHover(DEL_ICN, DEL_HOV);
         deleteIcon.configureTooltip("Delete Album");
@@ -185,7 +192,7 @@ public class AudionAlbumView
         });
 
         StyledImageView imageSelect = new StyledImageView(IMG_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(imageSelect, 0.1D * imageHolder.getFitHeight()));
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(imageSelect, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
 
         imageSelect.configureHover(IMG_ICN, IMG_HOV);
         imageSelect.configureTooltip("Change Album Image");
@@ -197,12 +204,12 @@ public class AudionAlbumView
             if (newImage != null && activeAlbum != null)
             {
                 activeAlbum.configureImage(newImage);
-                imageHolder.setImage(newImage);
+                ADN.IMAGE_VIEW.setImage(newImage);
             }
         });
 
         StyledImageView albumRename = new StyledImageView(ResourceLoader.RNM_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(albumRename, 0.1D * imageHolder.getFitHeight()));
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(albumRename, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
 
         albumRename.configureHover(RNM_ICN, RNM_HOV);
         albumRename.configureTooltip("Rename Album");
@@ -211,32 +218,29 @@ public class AudionAlbumView
         {
             if (activeAlbum != null)
             {
-                Stage renameStage = Firestarter.renameWindow("Rename Album", activeAlbum.displayName(), activeAlbum::rename, albumButton::setText);
+                Stage renameStage = Firestarter.renameWindow("Rename Album", activeAlbum.displayName(), activeAlbum::rename, albumButton::setText, albumTitle::setText);
                 renameStage.show();
             }
         });
 
-        StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 3, Style.INSET);
+        StyledImageView trackImport = new StyledImageView(IMT_ICN);
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(trackImport, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+
+        trackImport.configureHover(IMT_ICN, IMT_HOV);
+        trackImport.configureTooltip("Import Tracks");
+
+        trackImport.setOnMouseClicked(value ->
+        {
+
+        });
+
+        StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 4, Style.INSET);
 
         albumOptions.add(deleteIcon, 1, 1);
         albumOptions.add(imageSelect, 1, 2);
         albumOptions.add(albumRename, 1, 3);
+        albumOptions.add(trackImport, 1, 4);
 
         return albumOptions;
-    }
-
-    public static LinkedScrollPane<Button, Track> trackList()
-    {
-        LinkedScrollPane<Button, Track> trackList = new LinkedScrollPane<>();
-        trackList.addVisualStyle(Style.INSET);
-
-        for (int indx = 0; indx < 20; indx++)
-        {
-            Button track = new Button("test");
-
-            trackList.link(track, Track.empty());
-        }
-
-        return trackList;
     }
 }
