@@ -1,10 +1,42 @@
 package xkv.content;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import xkv.Firestarter;
+import xkv.visual.VisualResourceLoader;
+import xkv.visual.controls.StyledButton;
+import xkv.visual.css.IStylable;
+import xkv.visual.css.Style;
+import xkv.visual.images.StyledImageView;
+import xkv.visual.panels.DynamicResizeable;
+import xkv.visual.panels.PaneFactory;
+import xkv.visual.panels.StandardGridPane;
+import xkv.visual.panels.audion.AudionPanel;
+
+import static xkv.ResourceLoader.TRK_HOV;
+import static xkv.ResourceLoader.TRK_ICN;
+
 public class Track
 {
+    public static Track compose(String identifier, String author, String path)
+    {
+        return new Track(identifier, author, path);
+    }
+
+    public static Track empty()
+    {
+        return new Track();
+    }
+
     protected String identifier, author;
 
     protected int plays;
+
+    protected String path;
 
     protected long duration;
 
@@ -13,21 +45,102 @@ public class Track
 
     }
 
-    protected Track(String identifier, String author, long duration)
+    protected Track(String identifier, String author, String path)
     {
         this.identifier = identifier;
         this.author = author;
         this.plays = 0;
-        this.duration = duration;
+        this.path = path;
     }
 
-    public static Track compose(String identifier, String author, long duration)
+    public String identifier()
     {
-        return new Track(identifier, author, duration);
+        return identifier;
     }
 
-    public static Track empty()
+    public String author()
     {
-        return new Track();
+        return author;
+    }
+
+    public StandardGridPane forDisplay()
+    {
+        final double reference = AudionPanel.PANEL_HEIGHT / 20;
+
+        StandardGridPane container = PaneFactory.autoPaddedGrid(0, 2, 1, Style.SCROLLPANE_BUTTON);
+
+        StyledImageView play = new StyledImageView(TRK_ICN);
+        StyledButton identifierView = new StyledButton(identifier);
+        StyledButton authorView = new StyledButton(author);
+        StyledButton duration = new StyledButton("0:00");
+
+        BorderPane playContainer = PaneFactory.styledBorderPane(play, Style.SPBC);
+
+        playContainer.setPrefWidth(reference);
+
+        play.configureTooltip("Play this track");
+        play.configureHover(TRK_ICN, TRK_HOV);
+
+        VisualResourceLoader.scaleImageView(play, reference - 10);
+        GridPane.setHalignment(playContainer, HPos.CENTER);
+        GridPane.setValignment(playContainer, VPos.CENTER);
+
+        identifierView.setMaxWidth(Double.MAX_VALUE);
+        identifierView.setAlignment(Pos.CENTER_LEFT);
+
+        authorView.setPrefWidth(reference * 5);
+        authorView.setAlignment(Pos.CENTER_LEFT);
+
+        duration.setMaxWidth(reference * 3);
+        duration.setMinWidth(reference * 3);
+        duration.setAlignment(Pos.CENTER_RIGHT);
+
+        DynamicResizeable.addResizeListener(() -> authorView.setPrefWidth(Firestarter.container.getWidth() / 30 * 5));
+
+        container.add(playContainer, 1, 1, Priority.NEVER);
+        container.add(identifierView, 2, 1, Priority.ALWAYS);
+        container.add(authorView, 3, 1, Priority.SOMETIMES);
+        container.add(duration, 4, 1, Priority.SOMETIMES);
+
+        container.setCache(false);
+
+        container.getChildren().forEach(node ->
+        {
+            if (node instanceof IStylable)
+            {
+                IStylable stylable = (IStylable) node;
+
+                stylable.addVisualStyle(Style.SPBC);
+            }
+
+            if (node instanceof StyledButton)
+            {
+                StyledButton button = (StyledButton) node;
+                button.setMaxHeight(Double.MAX_VALUE);
+                GridPane.setVgrow(button, Priority.ALWAYS);
+                button.setCache(false);
+            }
+        });
+
+        return container;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return String.format("%s : %s", identifier, author).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Track)
+        {
+            Track track = (Track) obj;
+
+            return track.identifier.equals(this.identifier) && track.author.equals(this.author);
+        }
+
+        return false;
     }
 }

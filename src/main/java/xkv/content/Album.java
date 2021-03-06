@@ -7,6 +7,7 @@ import xkv.visual.VisualResourceLoader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class Album
@@ -57,7 +58,7 @@ public class Album
 
     public String formattedInfo()
     {
-        String info = String.format("%d tracks", tracks.size());
+        String info = String.format("%d track%s", tracks.size(), tracks.size() == 1 ? "" : "s");
 
         String time = Time.longToString(duration, false);
 
@@ -90,7 +91,7 @@ public class Album
 
     public void addTrack(Track track)
     {
-
+        tracks.add(track);
     }
 
     public void removeTrack(Track track)
@@ -111,6 +112,11 @@ public class Album
     public void rename(String newIdentifier)
     {
         this.displayName = newIdentifier;
+    }
+
+    public Iterator<Track> iterator()
+    {
+        return tracks.iterator();
     }
 
     @Override
