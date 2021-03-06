@@ -1,8 +1,6 @@
 package xkv.visual.panels;
 
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -17,12 +15,14 @@ public class StandardGridPane extends GridPane implements IStylable
     protected StandardGridPane()
     {
         setGap(DEFAULT_SPACING);
+        setSnapToPixel(true);
     }
 
     protected StandardGridPane(double gap, int columns, int rows)
     {
         setGap(gap);
         pad(columns, rows);
+        setSnapToPixel(true);
     }
 
     protected void setGap(double gap)
@@ -55,7 +55,6 @@ public class StandardGridPane extends GridPane implements IStylable
         }
         catch (IndexOutOfBoundsException | NullPointerException ignored)
         {
-
         }
     }
 
@@ -70,7 +69,6 @@ public class StandardGridPane extends GridPane implements IStylable
         }
         catch (IndexOutOfBoundsException | NullPointerException ignored)
         {
-
         }
     }
 

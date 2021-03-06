@@ -17,6 +17,14 @@ public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPan
     public LinkedScrollPane()
     {
         super();
+        this.setCache(false);
+    }
+
+    public LinkedScrollPane(Style... styles)
+    {
+        super();
+        this.setCache(false);
+        addVisualStyle(styles);
     }
 
     public void link(ITEM item, LINK link)
@@ -31,6 +39,8 @@ public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPan
 
             Style.apply(region, Style.SCROLLPANE_BUTTON, Style.SQUARE);
         }
+
+        item.setCache(false);
 
         linker.put(item, link);
         dualLinker.put(link, item);
@@ -64,6 +74,17 @@ public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPan
         linker.remove(item);
 
         super.remove(item);
+    }
+
+    public void clear()
+    {
+        for (ITEM item : linker.keySet())
+        {
+            super.remove(item);
+        }
+
+        linker.clear();
+        dualLinker.clear();
     }
 
     public LinkedScrollPane<ITEM, LINK> width(double width)

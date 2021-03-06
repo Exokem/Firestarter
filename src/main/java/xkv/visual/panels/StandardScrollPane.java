@@ -29,7 +29,9 @@ public class StandardScrollPane<I extends Node> extends ScrollPane implements IS
 
     protected StandardScrollPane(int slates)
     {
-        this.itemGrid = PaneFactory.autoPaddedGrid(0, 1, slates, Style.WHITE);
+        itemGrid = PaneFactory.autoPaddedGrid(0, 1, slates, Style.WHITE);
+
+        itemGrid.setSnapToPixel(true);
 
         // Allow contents to use entire space
         this.setFitToWidth(true);
