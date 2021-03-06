@@ -36,17 +36,24 @@ public class Firestarter extends Application
 
     public static Stage firestarter;
 
+    public static Region container;
+
     @Override
     public void start(Stage stage) throws Exception
     {
+        ResourceLoader.SETUP.loadData();
+
         ResourceLoader.loadResources();
 
         firestarter = stage;
 
         Display.initialize(stage);
 
-        Scene main = new Scene(Display.format());
+        container = Display.format();
 
+        Scene main = new Scene(container);
+
+        loadCSS(main, "defaults");
         loadCSS(main, "visual");
 
         stage.setScene(main);
@@ -89,6 +96,7 @@ public class Firestarter extends Application
         fieldLabel.setMinWidth(Region.USE_PREF_SIZE);
 
         rename.setPrefWidth(0.1D * AudionPanel.PANEL_WIDTH);
+        rename.addVisualStyle(Style.UI_BUTTON);
 
         rename.setOnAction(value ->
         {

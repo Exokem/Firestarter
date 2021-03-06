@@ -3,7 +3,6 @@ package xkv.visual.panels;
 import javafx.application.Platform;
 import javafx.scene.layout.Region;
 
-import javax.swing.text.html.ImageView;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,11 +25,11 @@ public class DynamicResizeable
         EXTRA_LISTENERS.forEach(Runnable::run);
     }
 
-    public static void commonDependents(DynamicResizeable root, Collection<Region> regions, Consumer<Region> communFunction)
+    public static void commonDependents(DynamicResizeable root, Collection<Region> regions, Consumer<Region> commonFunction)
     {
         regions.forEach(region ->
         {
-            DynamicResizeable resizeable = dependent(root, region, communFunction);
+            DynamicResizeable resizeable = dependent(root, region, commonFunction);
         });
     }
 
