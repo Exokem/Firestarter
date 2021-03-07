@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import xkv.visual.Display;
 import xkv.visual.controls.StyledButton;
@@ -75,6 +76,8 @@ public class Firestarter extends Application
         subsidiaryStage.setTitle(title);
         subsidiaryStage.initOwner(firestarter);
         subsidiaryStage.setScene(scene);
+
+        subsidiaryStage.initModality(Modality.WINDOW_MODAL);
 
         return subsidiaryStage;
     }
