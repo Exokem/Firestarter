@@ -3,6 +3,7 @@ package xkv.visual.controls;
 import javafx.scene.control.Button;
 import xkv.visual.css.FadeButtonSkin;
 import xkv.visual.css.IStylable;
+import xkv.visual.css.Style;
 
 public class StyledButton extends Button implements IStylable
 {
@@ -10,6 +11,7 @@ public class StyledButton extends Button implements IStylable
     {
         super(text);
         setSnapToPixel(true);
+        addVisualStyle(Style.UI_BUTTON);
     }
 
     public StyledButton()

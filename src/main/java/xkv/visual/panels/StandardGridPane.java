@@ -14,8 +14,7 @@ public class StandardGridPane extends GridPane implements IStylable
 
     protected StandardGridPane()
     {
-        setGap(DEFAULT_SPACING);
-        setSnapToPixel(true);
+
     }
 
     protected StandardGridPane(double gap, int columns, int rows)

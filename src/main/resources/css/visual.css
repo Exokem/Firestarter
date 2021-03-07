@@ -1,18 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital@0;1&family=IBM+Plex+Sans+Condensed:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&family=IBM+Plex+Serif:ital@0;1&display=swap');
 
-.ui-button {
-  -fx-border-radius: 0;
-  -fx-background-radius: 0;
-  -fx-background-color: whitesmoke;
-  -fx-border-color: gainsboro;
-  -fx-border-width: 1px;
-}
-
-.ui-button:hover {
-  -fx-background-color: gainsboro;
-}
-
 .area-button {
   -fx-background-radius: 0;
   -fx-border-radius: 0;
@@ -65,54 +53,6 @@
   -fx-background-color: rgba(0, 0, 0, 0);
 }
 
-.highlight_button {
-  -fx-background-color: white;
-}
-
-.scrollpane-button {
-  -fx-border-radius: 0;
-  -fx-background-radius: 0;
-  -fx-background-color: white;
-  -fx-border-color: gainsboro;
-  -fx-border-width: 1px;
-  -fx-border-insets: -1px;
-  -fx-padding: 0px;
-}
-
-.scrollpane-button:hover {
-  -fx-background-color: whitesmoke;
-}
-
-.scrollpane-button-child {
-  -fx-background-color: rgba(0, 0, 0, 0);
-  -fx-border-radius: 0;
-  -fx-background-radius: 0;
-  /* -fx-border-color: gainsboro;
-  -fx-border-width: 1px;
-  -fx-border-insets: 0px;
-
-  -fx-font-weight: 400;
-  -fx-font-size: 12;
-  -fx-font-family: 'IBM Plex Sans', sans-serif; */
-}
-
-/* .scrollpane-button-child:hover {
-  -fx-border-color: white;
-} */
-
-.transparent_button {
-  -fx-background-color: rgba(0, 0, 0, 0);
-  -fx-text-fill: white;
-  -fx-font-weight: 800;
-  -fx-border-width: 2px;
-  -fx-border-insets: 5px;
-  -fx-border-color: white;
-}
-
-.transparent_button:hover {
-  -fx-background-color: rgba(0, 0, 0, 0);
-}
-
 .inset-object {
   -fx-border-style: solid;
   -fx-border-color: gainsboro;
@@ -128,7 +68,7 @@
   -fx-effect: dropshadow(gaussian, dimgray, 15, 0.1, 5, 5);
 }
 
-.small_shadow {
+.small-shadow {
   -fx-effect: dropshadow(gaussian, dimgray, 8, 0.1, 3, 3);
 }
 

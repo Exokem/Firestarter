@@ -151,7 +151,6 @@ public class AudionAlbumView
             while (iterator.hasNext())
             {
                 Track track = iterator.next();
-//                Button trackButton = new Button(track.identifier());
                 ADN.TRACK_VIEW.link(track.forDisplay(), track);
             }
         }
@@ -231,7 +230,7 @@ public class AudionAlbumView
 
         trackImport.setOnMouseClicked(value ->
         {
-
+            ResourceLoader.importMultiTrackDialog(Firestarter.firestarter, "Import Tracks");
         });
 
         StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 4, Style.INSET);

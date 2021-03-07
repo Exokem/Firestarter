@@ -1,18 +1,16 @@
 package xkv.visual;
 
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import xkv.visual.panels.PaneFactory;
+import xkv.visual.panels.StandardGridPane;
 import xkv.visual.panels.audion.AudionPanel;
-
-import static xkv.visual.css.PanelApplicators.applyInset;
 
 
 public class Display
 {
-    private static final BorderPane container = new BorderPane();
+    private static final StandardGridPane container = PaneFactory.autoPaddedGrid(10, 1, 1);
 
     public static Pane format()
     {
@@ -21,24 +19,6 @@ public class Display
 
     public static void initialize(Stage stage)
     {
-
-        audionAccess.getStyleClass().add("area-button");
-        optionsAccess.getStyleClass().add("area-button");
-
-        applyInset(accessView);
-
-//        stage.setResizable(false);
-
-        accessView.add(optionsAccess, 0, 0);
-        accessView.add(audionAccess, 1, 0);
-
-        container.setTop(accessView);
-        container.setCenter(AudionPanel.instance());
+        container.add(AudionPanel.instance(), 1, 1, Priority.ALWAYS, Priority.ALWAYS);
     }
-
-    private static final GridPane accessView = new GridPane();
-
-    private static final Button
-            audionAccess = new Button("Audion"),
-            optionsAccess = new Button("Options");
 }

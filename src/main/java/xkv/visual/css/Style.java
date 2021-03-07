@@ -4,7 +4,7 @@ import javafx.scene.layout.Region;
 
 public enum Style
 {
-    DEBUG("debug"), SHADOW("shadow"), SMALL_SHADOW("small_shadow"), INSET("inset-object"), BSP_BUTTON("bsp-button"),
+    DEBUG("debug"), SHADOW("shadow"), SMALL_SHADOW("small-shadow"), INSET("inset-object"), BSP_BUTTON("bsp-button"),
     TITLE_BOLD("title-bold"), SUBTITLE("subtitle"), WHITE("white"), SCROLLPANE_BUTTON("scrollpane-button"),
     SQUARE("square"), SPBC("scrollpane-button-child"), UI_BUTTON("ui-button");
 
