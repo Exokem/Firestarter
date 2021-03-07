@@ -2,7 +2,7 @@ package xkv.visual.controls;
 
 import xkv.visual.css.Style;
 
-public class ButtonFactory
+public class ControlFactory
 {
     public static MultiButton multiButton(int gap, int columns, int rows, Style... styles)
     {

@@ -65,4 +65,16 @@ public class PaneFactory
 
         return pane;
     }
+
+    public static BorderPane paddedBorderPane(Node center, double padding, Style... styles)
+    {
+        BorderPane pane = styledBorderPane(center, styles);
+
+        BorderSection.edgeSet().forEach(edge ->
+        {
+            edge.place(pane, new Rectangle(padding, padding));
+        });
+
+        return pane;
+    }
 }
