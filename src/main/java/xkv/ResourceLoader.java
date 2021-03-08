@@ -124,7 +124,7 @@ public class ResourceLoader
         }
     }
 
-    public static FileChooser.ExtensionFilter AUDIO = new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav", ".ogg", "*.aac");
+    public static FileChooser.ExtensionFilter AUDIO = new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav", ".ogg", "*.aac", "*.m4a");
 
     public static void importMultiTrackDialog(Stage stage, String title)
     {
@@ -273,8 +273,9 @@ public class ResourceLoader
                     {
                         Files.copy(file.toPath(), internal.toPath());
                     }
-
                 }
+
+                Track track = Track.fromFile(internal);
 
                 OUTPUT.log(Level.INFO, String.format("Successfully imported %s", internal.getAbsolutePath()));
             }

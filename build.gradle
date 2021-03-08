@@ -12,7 +12,7 @@ dependencies {
 
 javafx {
     version = "11"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
 }
 
 mainClassName = 'xkv.Firestarter'

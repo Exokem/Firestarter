@@ -1,11 +1,14 @@
 package xkv.content;
 
+import javafx.collections.MapChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import xkv.Firestarter;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
@@ -16,6 +19,8 @@ import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 import xkv.visual.panels.audion.AudionPanel;
+
+import java.io.File;
 
 import static xkv.ResourceLoader.TRK_HOV;
 import static xkv.ResourceLoader.TRK_ICN;
@@ -32,9 +37,31 @@ public class Track
         return new Track();
     }
 
+    public static Track fromFile(File file)
+    {
+        Track track = new Track();
+
+        Media fileMedia = new Media(file.toURI().toString());
+
+        MediaPlayer player = new MediaPlayer(fileMedia);
+
+        System.out.println(fileMedia.getMetadata());
+
+        fileMedia.getMetadata().addListener((MapChangeListener<String, Object>) listener ->
+        {
+            System.out.println(fileMedia.getMetadata());
+        });
+
+        track.data = file;
+
+        return track;
+    }
+
     protected String identifier, author;
 
     protected int plays;
+
+    protected File data;
 
     protected String path;
 
