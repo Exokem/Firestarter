@@ -16,6 +16,7 @@ import xkv.visual.css.Style;
 import xkv.visual.panels.LinkedScrollPane;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
+import xkv.visual.panels.audion.AudionAlbumView;
 import xkv.visual.panels.audion.AudionPanel;
 
 import java.io.File;
@@ -126,6 +127,8 @@ public class ResourceLoader
 
     public static FileChooser.ExtensionFilter AUDIO = new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav", ".ogg", "*.aac", "*.m4a");
 
+    public static final CheckBox INTO_LIBRARY = new CheckBox();
+
     public static void importMultiTrackDialog(Stage stage, String title)
     {
         FileChooser fileSelector = new FileChooser();
@@ -136,9 +139,10 @@ public class ResourceLoader
         List<File> files = fileSelector.showOpenMultipleDialog(stage);
 
         StandardGridPane buttons = PaneFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
+        StandardGridPane misc = PaneFactory.autoPaddedGrid(10, 2, 3, Style.INSET);
         StandardGridPane dirOpt = PaneFactory.autoPaddedGrid(10, 2, 4, Style.INSET);
         StandardGridPane adjOpt = PaneFactory.autoPaddedGrid(10, 2, 5, Style.INSET);
-        StandardGridPane layout = PaneFactory.autoPaddedGrid(10, 1, 3, Style.INSET);
+        StandardGridPane layout = PaneFactory.autoPaddedGrid(10, 1, 4, Style.INSET);
         StandardGridPane container = PaneFactory.autoPaddedGrid(10, 1, 1);
 
         Stage importOptions = Firestarter.subsidiary("Import Options", container);
@@ -147,7 +151,8 @@ public class ResourceLoader
 
         layout.add(adjOpt, 1, 1, Priority.SOMETIMES);
         layout.add(dirOpt, 1, 2, Priority.SOMETIMES);
-        layout.add(buttons, 1, 3, Priority.SOMETIMES);
+        layout.add(misc, 1, 3, Priority.SOMETIMES);
+        layout.add(buttons, 1, 4, Priority.SOMETIMES);
 
         Label existing = new Label("Existing Files");
         Label replace = new Label("Replace");
@@ -189,6 +194,16 @@ public class ResourceLoader
         dirOpt.add(dirCheck, 1, 3);
         dirOpt.add(subDir, 2, 3, Priority.ALWAYS);
         dirOpt.add(dirInput, 1, 4, 2, 1, Priority.ALWAYS);
+
+        Label general = new Label("General");
+        Label library = new Label("Import to Library");
+
+        INTO_LIBRARY.setSelected(true);
+
+        misc.add(general, 1, 1, 2, 1);
+        misc.add(new Separator(), 1, 2, 2, 1);
+        misc.add(INTO_LIBRARY, 1, 3);
+        misc.add(library, 2, 3, Priority.ALWAYS);
 
         StyledButton cancel = new StyledButton("Cancel"), impor = new StyledButton("Import");
         GridPane.setHalignment(impor, HPos.RIGHT);
@@ -239,9 +254,22 @@ public class ResourceLoader
             dirPath += subdirectory;
         }
 
+        File directory = new File(dirPath);
+
+        if (!directory.exists())
+        {
+            if (!directory.mkdir())
+            {
+                OUTPUT.log(Level.WARNING, String.format("Import failure; directory %s could not be created", dirPath));
+                return;
+            }
+        }
+
         List<File> existingFiles = new ArrayList<>();
 
         List<File> copyFailures = new ArrayList<>();
+
+        final List<Track> importedTracks = new ArrayList<>();
 
         for (File file : files)
         {
@@ -275,9 +303,7 @@ public class ResourceLoader
                     }
                 }
 
-                Track track = Track.fromFile(internal);
-
-                AudionPanel.LIBRARY.addTrack(track);
+                importedTracks.add(Track.fromFile(internal));
 
                 OUTPUT.log(Level.INFO, String.format("Successfully imported %s", internal.getAbsolutePath()));
             }
@@ -292,5 +318,9 @@ public class ResourceLoader
                 copyFailures.add(internal);
             }
         }
+
+        AudionAlbumView.importTracks(importedTracks, INTO_LIBRARY.isSelected());
+
+        AudionAlbumView.refresh();
     }
 }

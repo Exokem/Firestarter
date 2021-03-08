@@ -22,6 +22,7 @@ import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import static xkv.ResourceLoader.*;
@@ -133,6 +134,27 @@ public class AudionAlbumView
         albumView.add(ADN.TRACK_VIEW, 1, 2, 3, 1, Priority.ALWAYS, Priority.ALWAYS);
 
         return albumView;
+    }
+
+    public static void refresh()
+    {
+        updateAlbumDetails();
+    }
+
+    public static void importTracks(Collection<Track> tracks, boolean intoLibrary)
+    {
+        if (activeAlbum != null)
+        {
+            activeAlbum.addTracks(tracks);
+        }
+
+        if (intoLibrary)
+        {
+            if (activeAlbum != AudionPanel.LIBRARY)
+            {
+                AudionPanel.LIBRARY.addTracks(tracks);
+            }
+        }
     }
 
     private static Label albumTitle, albumSpan;

@@ -5,10 +5,7 @@ import xkv.util.Time;
 import xkv.visual.VisualResourceLoader;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Album
 {
@@ -92,6 +89,11 @@ public class Album
     public void addTrack(Track track)
     {
         tracks.add(track);
+    }
+
+    public void addTracks(Collection<Track> tracks)
+    {
+        tracks.forEach(this::addTrack);
     }
 
     public void removeTrack(Track track)

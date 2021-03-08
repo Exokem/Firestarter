@@ -74,7 +74,7 @@ public class Track
         } catch (InvalidAudioFrameException e)
         {
             e.printStackTrace();
-        }
+        } catch (NullPointerException ignored) {}
 
 
         track.data = file;
