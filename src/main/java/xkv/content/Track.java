@@ -1,14 +1,19 @@
 package xkv.content;
 
-import javafx.collections.MapChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 import xkv.Firestarter;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
@@ -21,6 +26,7 @@ import xkv.visual.panels.StandardGridPane;
 import xkv.visual.panels.audion.AudionPanel;
 
 import java.io.File;
+import java.io.IOException;
 
 import static xkv.ResourceLoader.TRK_HOV;
 import static xkv.ResourceLoader.TRK_ICN;
@@ -41,16 +47,35 @@ public class Track
     {
         Track track = new Track();
 
-        Media fileMedia = new Media(file.toURI().toString());
-
-        MediaPlayer player = new MediaPlayer(fileMedia);
-
-        System.out.println(fileMedia.getMetadata());
-
-        fileMedia.getMetadata().addListener((MapChangeListener<String, Object>) listener ->
+        try
         {
-            System.out.println(fileMedia.getMetadata());
-        });
+            AudioFile audioFile = AudioFileIO.read(file);
+
+            Tag audioTag = audioFile.getTag();
+
+            track.identifier = audioTag.getFirstField(FieldKey.TITLE).toString();
+            track.author = audioTag.getFirstField(FieldKey.ALBUM_ARTIST).toString();
+
+//            String seconds = audioTag.getFirstField(GenericAudioHeader.FIELD_LENGTH).toString();
+//            System.out.println(seconds);
+
+        } catch (CannotReadException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } catch (TagException e)
+        {
+            e.printStackTrace();
+        } catch (ReadOnlyFileException e)
+        {
+            e.printStackTrace();
+        } catch (InvalidAudioFrameException e)
+        {
+            e.printStackTrace();
+        }
+
 
         track.data = file;
 

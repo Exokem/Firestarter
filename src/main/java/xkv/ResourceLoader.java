@@ -277,6 +277,8 @@ public class ResourceLoader
 
                 Track track = Track.fromFile(internal);
 
+                AudionPanel.LIBRARY.addTrack(track);
+
                 OUTPUT.log(Level.INFO, String.format("Successfully imported %s", internal.getAbsolutePath()));
             }
             catch (FileAlreadyExistsException f)
