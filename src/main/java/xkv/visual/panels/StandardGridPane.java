@@ -12,7 +12,7 @@ public class StandardGridPane extends GridPane implements IStylable
 {
     public static final int DEFAULT_SPACING = 10;
 
-    protected StandardGridPane()
+    public StandardGridPane()
     {
 
     }

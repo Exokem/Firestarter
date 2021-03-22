@@ -57,9 +57,7 @@
 
 .overlay-text .text {
   -fx-fill: white;
-  /* -fx-stroke: black;
-  -fx-stroke-width: 0.4px;
-  -fx-stroke-type: outside; */
+  /* -fx-font-size: 3rem; */
 }
 
 .transparent {

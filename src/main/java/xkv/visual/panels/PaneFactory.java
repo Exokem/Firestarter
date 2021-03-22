@@ -35,6 +35,19 @@ public class PaneFactory
         return pane;
     }
 
+    public static StandardGridPane autoPaddedGrid(int hGap, int vGap, int innerColumns, int innerRows, Style... styles)
+    {
+        StandardGridPane pane = new StandardGridPane();
+
+        pane.addVisualStyle(styles);
+        pane.pad(innerColumns + 2, innerRows + 2);
+        pane.setSnapToPixel(true);
+        pane.setHgap(hGap);
+        pane.setVgap(vGap);
+
+        return pane;
+    }
+
     public static LinkedScrollPane<Button, Album> linkedScrollPane(Style... styles)
     {
         LinkedScrollPane<Button, Album> scrollPane = new LinkedScrollPane<>();

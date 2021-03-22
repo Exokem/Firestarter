@@ -10,6 +10,11 @@
   -fx-background-color: gainsboro;
 }
 
+.scroll-pane {
+  -fx-background-insets: 0px;
+  -fx-padding: 0px;
+}
+
 .scrollpane-button {
   -fx-border-radius: 0;
   -fx-background-radius: 0;
@@ -46,4 +51,29 @@
 
 .transparent_button:hover {
   -fx-background-color: rgba(0, 0, 0, 0);
+}
+
+.grid-pane {
+  -fx-font-size: 19.5em;
+}
+
+.root {
+  -fx-font-size: 12px;
+}
+
+.progress-bar > .bar {
+  -fx-background-insets: 0px;
+  -fx-background-color: -fx-box-border, white;
+  -fx-background-radius: 0;
+}
+
+.progress-bar:indeterminate > .bar {
+  -fx-background-color: -fx-box-border, white;
+  -fx-background-radius: 0;
+}
+
+.progress-bar > .track {
+  -fx-text-box-border: transparent;
+  -fx-background-color: -fx-box-border, gray;
+  -fx-background-insets: 0px;
 }
