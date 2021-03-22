@@ -16,6 +16,7 @@ import xkv.content.Album;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
+import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.LinkedScrollPane;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
@@ -38,6 +39,9 @@ public class AudionAlbumSelect
     {
         LinkedScrollPane<Button, Album> albums = PaneFactory.linkedScrollPane().width(SCALE * REFERENCE);
         GridPane.setVgrow(albums, Priority.ALWAYS);
+        albums.setMaxWidth(SCALE * REFERENCE);
+
+        DynamicResizeable.addResizeListener(() -> albums.setMaxWidth(SCALE * Firestarter.firestarter.getWidth()));
 
         return albums;
     }
@@ -49,6 +53,8 @@ public class AudionAlbumSelect
         button.addVisualStyle(Style.UI_BUTTON);
         button.setPrefWidth(SCALE * REFERENCE);
         button.setOnAction((actionEvent) -> newAlbum());
+
+        DynamicResizeable.addResizeListener(() -> button.setPrefWidth(SCALE * Firestarter.firestarter.getWidth()));
 
         return button;
     }

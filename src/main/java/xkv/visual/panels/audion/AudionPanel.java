@@ -22,7 +22,7 @@ public class AudionPanel extends StandardGridPane implements IStylable
         return new AudionPanel();
     }
 
-    protected static final StandardGridPane CONTENT_OVERARCH = PaneFactory.autoPaddedGrid(10, 2, 4, Style.INSET);
+    protected static final StandardGridPane CONTENT_OVERARCH = PaneFactory.autoPaddedGrid(10, 2, 3, Style.INSET);
 
     private final DynamicResizeable root;
 
@@ -53,10 +53,8 @@ public class AudionPanel extends StandardGridPane implements IStylable
         {
             CONTENT_OVERARCH.add(AudionPlayer.ICON, 1, 3);
             CONTENT_OVERARCH.add(AudionPlayer.OVERLAY, 1, 3);
-
         });
-//        CONTENT_OVERARCH.add(AudionPlayer.LABEL, 1, 4);
-        CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 4, Priority.SOMETIMES);
+        CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 3, Priority.ALWAYS);
 
         this.add(CONTENT_OVERARCH, 1, 1);
 
