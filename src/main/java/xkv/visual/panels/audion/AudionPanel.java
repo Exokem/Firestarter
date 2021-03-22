@@ -1,5 +1,6 @@
 package xkv.visual.panels.audion;
 
+import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import xkv.content.Album;
@@ -21,7 +22,7 @@ public class AudionPanel extends StandardGridPane implements IStylable
         return new AudionPanel();
     }
 
-    protected static final StandardGridPane CONTENT_OVERARCH = PaneFactory.paddedGrid(10, 4, 4, Style.INSET);
+    protected static final StandardGridPane CONTENT_OVERARCH = PaneFactory.autoPaddedGrid(10, 2, 4, Style.INSET);
 
     private final DynamicResizeable root;
 
@@ -48,8 +49,14 @@ public class AudionPanel extends StandardGridPane implements IStylable
 
         CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_PROVIDER, 1, 1);
         CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_LIST, 1, 2);
+        Platform.runLater(() ->
+        {
+            CONTENT_OVERARCH.add(AudionPlayer.ICON, 1, 3);
+            CONTENT_OVERARCH.add(AudionPlayer.OVERLAY, 1, 3);
 
-        CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 2, Priority.SOMETIMES);
+        });
+//        CONTENT_OVERARCH.add(AudionPlayer.LABEL, 1, 4);
+        CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 4, Priority.SOMETIMES);
 
         this.add(CONTENT_OVERARCH, 1, 1);
 
