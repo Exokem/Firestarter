@@ -138,6 +138,8 @@ public class ResourceLoader
 
         List<File> files = fileSelector.showOpenMultipleDialog(stage);
 
+        if (files == null) return;
+
         StandardGridPane buttons = PaneFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
         StandardGridPane misc = PaneFactory.autoPaddedGrid(10, 2, 3, Style.INSET);
         StandardGridPane dirOpt = PaneFactory.autoPaddedGrid(10, 2, 4, Style.INSET);

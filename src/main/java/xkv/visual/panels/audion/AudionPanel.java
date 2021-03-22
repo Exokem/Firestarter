@@ -46,7 +46,7 @@ public class AudionPanel extends StandardGridPane implements IStylable
         CONTENT_OVERARCH.setPrefWidth(PANEL_WIDTH);
         CONTENT_OVERARCH.setPrefHeight(PANEL_HEIGHT);
 
-        CONTENT_OVERARCH.add(AudionAlbumSelect.albumProvider(), 1, 1);
+        CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_PROVIDER, 1, 1);
         CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_LIST, 1, 2);
 
         CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 2, Priority.SOMETIMES);

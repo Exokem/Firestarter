@@ -126,7 +126,7 @@ public class AudionAlbumView
         ADN.IMAGE_VIEW.maxWidth(albumView.getWidth());
         ADN.IMAGE_VIEW.maxHeight(albumView.getHeight());
 
-        BorderPane imageContainer = PaneFactory.styledBorderPane(ADN.IMAGE_VIEW);
+        BorderPane imageContainer = PaneFactory.styledBorderPane(ADN.IMAGE_VIEW, Style.INSET);
 
         albumView.add(imageContainer, 1, 1);
         albumView.add(albumOptions(), 2, 1);

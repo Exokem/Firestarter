@@ -26,11 +26,13 @@ import static xkv.visual.panels.audion.AudionPanel.createdAlbums;
 
 public class AudionAlbumSelect
 {
-    private static final double SCALE = 0.195D;
+    protected static final double SCALE = 0.195D;
 
     protected static final double REFERENCE = AudionPanel.PANEL_WIDTH;
 
     protected static final LinkedScrollPane<Button, Album> ALBUM_LIST = albumList();
+
+    protected static final Button ALBUM_PROVIDER = albumProvider();
 
     private static LinkedScrollPane<Button, Album> albumList()
     {
@@ -40,7 +42,7 @@ public class AudionAlbumSelect
         return albums;
     }
 
-    protected static Button albumProvider()
+    private static Button albumProvider()
     {
         StyledButton button = new StyledButton("New Album");
 
