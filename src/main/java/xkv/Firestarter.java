@@ -39,6 +39,16 @@ public class Firestarter extends Application
 
     public static Region container;
 
+    public static double width()
+    {
+        return firestarter.getWidth();
+    }
+
+    public static double height()
+    {
+        return firestarter.getHeight();
+    }
+
     @Override
     public void start(Stage stage) throws Exception
     {

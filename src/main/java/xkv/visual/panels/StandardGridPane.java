@@ -1,6 +1,7 @@
 package xkv.visual.panels;
 
 import javafx.application.Platform;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -64,6 +65,12 @@ public class StandardGridPane extends GridPane implements IStylable
     public void latentAdd(Node child, int col, int row, Priority... expansionPriorities)
     {
         Platform.runLater(() -> add(child, col, row, expansionPriorities));
+    }
+
+    public void alignedH(Node child, int col, int row, HPos alignment, Priority... expansionPriorities)
+    {
+        add(child, col, row, expansionPriorities);
+        GridPane.setHalignment(child, alignment);
     }
 
     public void add(Node child, int columnIndex, int rowIndex, Priority... expansionPriorities)

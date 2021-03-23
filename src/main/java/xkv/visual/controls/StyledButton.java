@@ -14,6 +14,12 @@ public class StyledButton extends Button implements IStylable
         addVisualStyle(Style.UI_BUTTON);
     }
 
+    public StyledButton(String text, Style... styles)
+    {
+        this(text);
+        addVisualStyle(styles);
+    }
+
     public StyledButton()
     {
         setSnapToPixel(true);
@@ -23,6 +29,13 @@ public class StyledButton extends Button implements IStylable
     {
         setPrefWidth(width);
         setPrefHeight(width);
+
+        return this;
+    }
+
+    public StyledButton width(double width)
+    {
+        setPrefWidth(width);
 
         return this;
     }

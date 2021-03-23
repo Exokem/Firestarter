@@ -66,7 +66,7 @@ public class AudionPlayer
         private static final ImageView ICON_VIEW = new ImageView(DEFAULT_IMAGE);
         protected static final BorderPane ICON = icon();
 
-        protected static double SCALE = AudionAlbumSelect.SCALE;
+        protected static double SCALE = Audion.Scale.MINOR.factor;
 
         private static final FadeTransition OVERLAY_FADE = overlayFade();
 
@@ -93,7 +93,7 @@ public class AudionPlayer
 
             iconContainer.setMaxWidth(SCALE * Audion.panelWidth());
 
-            VisualResourceLoader.scaleImageView(ICON_VIEW, AudionAlbumSelect.ALBUM_PROVIDER.getWidth());
+            VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.firestarter.getWidth());
             DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.firestarter.getWidth()));
 
             return iconContainer;

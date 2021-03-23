@@ -51,7 +51,7 @@ public class AudionAlbumView
     {
         if (Audion.albumMeasure() != 0)
         {
-            openAlbum(AudionAlbumSelect.ALBUM_LIST.top());
+            openAlbum(Audion.topAlbumButton());
             ALBUM_CONTENT_PANEL.setCenter(ALBUM_VIEW);
         }
         else
@@ -62,7 +62,7 @@ public class AudionAlbumView
 
     protected static void openAlbum(Button source)
     {
-        openAlbum(source, AudionAlbumSelect.ALBUM_LIST.getLink(source));
+        openAlbum(source, Audion.albumFromLink(source));
     }
 
     protected static void openAlbum(Button source, Album album)
@@ -80,8 +80,6 @@ public class AudionAlbumView
     protected static void deleteAlbum(Album album)
     {
         Audion.removeAlbum(album);
-
-        AudionAlbumSelect.ALBUM_LIST.remove(album);
 
         activeAlbum = null;
         albumButton = null;
@@ -103,7 +101,7 @@ public class AudionAlbumView
         GridPane.setHalignment(create, HPos.CENTER);
         GridPane.setValignment(create, VPos.TOP);
 
-        create.setOnAction(value -> AudionAlbumSelect.newAlbum());
+        create.setOnAction(value -> Audion.createAlbumPrompt());
         create.addVisualStyle(Style.UI_BUTTON);
 
         StandardGridPane emptyPanel = PaneFactory.autoPaddedGrid(10, 1, 2, Style.INSET);

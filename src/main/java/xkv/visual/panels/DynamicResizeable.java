@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class DynamicResizeable
 {
@@ -55,6 +56,15 @@ public class DynamicResizeable
     {
         Platform.runLater(resizeFunction);
         EXTRA_LISTENERS.add(resizeFunction);
+    }
+
+    public static void addPrefLimSizeListener(Region region, Supplier<Double> sizeProvider)
+    {
+        addResizeListener(() ->
+        {
+            region.setPrefWidth(sizeProvider.get());
+            region.setMaxWidth(sizeProvider.get());
+        });
     }
 
     private DynamicResizeable(Region region, Consumer<Region> resizeFunction)
