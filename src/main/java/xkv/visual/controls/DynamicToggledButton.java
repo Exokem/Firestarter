@@ -1,7 +1,6 @@
 package xkv.visual.controls;
 
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 
 public class DynamicToggledButton extends DynamicButton
 {
@@ -19,17 +18,21 @@ public class DynamicToggledButton extends DynamicButton
     {
         super();
 
-        setOnMouseClicked(this::onClicked);
+        setOnMouseClicked(value ->
+        {
+            if (qualifier.get())
+            {
+                action.run();
+                switchSelect();
+            }
+        });
     }
 
-    public void onClicked(MouseEvent value)
+    public void switchSelect()
     {
-        if (this.onClicked.get())
-        {
-            selected = !selected;
-            view.setImage(selected ? selectedImage : unselectedImage);
-            hoveredView.setImage(selected ? selectedHoveredImage : unselectedHoveredImage);
-        }
+        selected = !selected;
+        view.setImage(selected ? selectedImage : unselectedImage);
+        hoveredView.setImage(selected ? selectedHoveredImage : unselectedHoveredImage);
     }
 
     public static DynamicToggledButton configure(Image unselected, Image unselectedHovered, Image selected, Image selectedHovered)

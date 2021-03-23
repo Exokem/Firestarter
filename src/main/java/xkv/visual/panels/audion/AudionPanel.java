@@ -3,9 +3,7 @@ package xkv.visual.panels.audion;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import org.json.JSONException;
 import xkv.content.Album;
-import xkv.content.Track;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.IStylable;
 import xkv.visual.css.Style;
@@ -58,26 +56,6 @@ public class AudionPanel extends StandardGridPane implements IStylable
         CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 3, Priority.ALWAYS);
 
         this.add(CONTENT_OVERARCH, 1, 1);
-
-        // Debug
-
-        addAlbum(LIBRARY);
-
-        Track testTrack = Track.compose("Elephant", "Tame Impala", null);
-        Track track2 = Track.compose("Borderline", "Tame Impala", null);
-
-        LIBRARY.addTrack(testTrack);
-        LIBRARY.addTrack(track2);
-
-        try
-        {
-            addAlbum(Album.deserialize(LIBRARY.serialize()));
-        }
-
-        catch (JSONException ignored)
-        {
-
-        }
     }
 
     protected static final List<Album> albums = new ArrayList<>();
@@ -87,7 +65,7 @@ public class AudionPanel extends StandardGridPane implements IStylable
         return albums;
     }
 
-    protected static StyledButton addAlbum(Album album)
+    public static StyledButton addAlbum(Album album)
     {
         StyledButton button = new StyledButton(album.displayName());
 

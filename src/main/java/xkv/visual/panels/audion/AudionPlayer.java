@@ -108,7 +108,7 @@ public class AudionPlayer
             labels.add(AUTHOR, 0, 1);
 
             DynamicToggledButton playPause = DynamicToggledButton.configure(PLA_ICN, PLA_HOV, PAU_ICN, PAU_HOV);
-            playPause.setAction(() ->
+            playPause.bindQualifier(() ->
             {
                 if (playPause.selected()) return activable();
                 return deactivable();
@@ -119,18 +119,10 @@ public class AudionPlayer
             DynamicButton next = DynamicButton.configure(NXT_ICN, NXT_HOV).configureTooltip("Next");
 
             DynamicToggledButton shuffle = (DynamicToggledButton) DynamicToggledButton.configure(RND_ICN, RND_HOV, RND_ONI, RND_ONH).configureTooltip("Randomize");
-            shuffle.setAction(() ->
-            {
-                randomize = shuffle.selected();
-                return true;
-            });
+            shuffle.bindAction(() -> randomize = shuffle.selected());
 
             DynamicToggledButton repeat = (DynamicToggledButton) DynamicToggledButton.configure(RPT_ICN, RPT_HOV, RPT_ONI, RPT_ONH).configureTooltip("Repeat");
-            repeat.setAction(() ->
-            {
-                AudionPlayer.repeat = repeat.selected();
-                return true;
-            });
+            repeat.bindAction(() -> AudionPlayer.repeat = repeat.selected());
 
             // TODO: button functionality
 

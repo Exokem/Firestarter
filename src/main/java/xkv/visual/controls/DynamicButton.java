@@ -22,6 +22,9 @@ public class DynamicButton extends StandardGridPane
 
     protected Supplier<Boolean> onClicked = () -> true;
 
+    protected Supplier<Boolean> qualifier = () -> true;
+    protected Runnable action = () -> {};
+
     public static final double FADE_DURATION = 300;
 
     protected DynamicButton()
@@ -44,6 +47,14 @@ public class DynamicButton extends StandardGridPane
 
         super.add(view, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
         super.add(hoveredView, 0, 0, Priority.ALWAYS, Priority.ALWAYS);
+
+        setOnMouseClicked(value ->
+        {
+            if (qualifier.get())
+            {
+                action.run();
+            }
+        });
     }
 
     public static DynamicButton configure(Image image, Image hovered)
@@ -59,10 +70,14 @@ public class DynamicButton extends StandardGridPane
         return button;
     }
 
-    public void setAction(Supplier<Boolean> action)
+    public void bindQualifier(Supplier<Boolean> qualifier)
     {
-        this.onClicked = action;
-        setOnMouseClicked((value) -> onClicked.get());
+        this.qualifier = qualifier;
+    }
+
+    public void bindAction(Runnable action)
+    {
+        this.action = action;
     }
 
     public void resize(double dimension)
