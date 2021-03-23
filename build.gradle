@@ -11,8 +11,8 @@ repositories {
 }
 
 dependencies {
-    compile group: 'net.jthink', name: 'jaudiotagger', version: '2.2.3'
-    runtime group: 'net.jthink', name: 'jaudiotagger', version: '2.2.3'
+    implementation(group: 'net.jthink', name: 'jaudiotagger', version: '2.2.3')
+    implementation(group: 'org.json', name: 'json', version: '20210307')
 }
 
 javafx {
