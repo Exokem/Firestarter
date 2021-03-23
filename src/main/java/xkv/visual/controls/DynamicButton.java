@@ -10,6 +10,8 @@ import javafx.util.Duration;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.panels.StandardGridPane;
 
+import java.util.function.Supplier;
+
 public class DynamicButton extends StandardGridPane
 {
     protected Image image, hoveredImage;
@@ -17,6 +19,8 @@ public class DynamicButton extends StandardGridPane
     protected final ImageView view = new ImageView(), hoveredView = new ImageView();
 
     private final FadeTransition fade;
+
+    protected Supplier<Boolean> onClicked = () -> true;
 
     public static final double FADE_DURATION = 300;
 
@@ -53,6 +57,12 @@ public class DynamicButton extends StandardGridPane
         button.hoveredView.setImage(hovered);
 
         return button;
+    }
+
+    public void setAction(Supplier<Boolean> action)
+    {
+        this.onClicked = action;
+        setOnMouseClicked((value) -> onClicked.get());
     }
 
     public void resize(double dimension)

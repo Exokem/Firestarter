@@ -1,9 +1,6 @@
 package xkv.content;
 
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import org.jaudiotagger.audio.AudioFile;
@@ -15,11 +12,10 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import xkv.Firestarter;
-import xkv.visual.VisualResourceLoader;
+import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.IStylable;
 import xkv.visual.css.Style;
-import xkv.visual.images.StyledImageView;
 import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
@@ -82,29 +78,6 @@ public class Track
         return track;
     }
 
-    protected String identifier, author;
-
-    protected int plays;
-
-    protected File data;
-
-    protected String path;
-
-    protected long duration;
-
-    private Track()
-    {
-
-    }
-
-    protected Track(String identifier, String author, String path)
-    {
-        this.identifier = identifier;
-        this.author = author;
-        this.plays = 0;
-        this.path = path;
-    }
-
     public String identifier()
     {
         return identifier;
@@ -121,21 +94,14 @@ public class Track
 
         StandardGridPane container = PaneFactory.autoPaddedGrid(0, 2, 1, Style.SCROLLPANE_BUTTON);
 
-        StyledImageView play = new StyledImageView(TRK_ICN);
+        DynamicButton play = DynamicButton.configure(TRK_ICN, TRK_HOV).configureTooltip("Play this track");
         StyledButton identifierView = new StyledButton(identifier);
         StyledButton authorView = new StyledButton(author);
         StyledButton duration = new StyledButton("0:00");
 
-        BorderPane playContainer = PaneFactory.styledBorderPane(play, Style.SPBC);
+        play.resize(reference);
 
-        playContainer.setPrefWidth(reference);
-
-        play.configureTooltip("Play this track");
-        play.configureHover(TRK_ICN, TRK_HOV);
-
-        VisualResourceLoader.scaleImageView(play, reference - 10);
-        GridPane.setHalignment(playContainer, HPos.CENTER);
-        GridPane.setValignment(playContainer, VPos.CENTER);
+        DynamicResizeable.addResizeListener(() -> play.resize(container.getHeight()));
 
         identifierView.setMaxWidth(Double.MAX_VALUE);
         identifierView.setAlignment(Pos.CENTER_LEFT);
@@ -149,11 +115,12 @@ public class Track
 
         DynamicResizeable.addResizeListener(() -> authorView.setPrefWidth(Firestarter.container.getWidth() / 30 * 5));
 
-        container.add(playContainer, 1, 1, Priority.NEVER);
+        container.add(play, 1, 1, Priority.NEVER);
         container.add(identifierView, 2, 1, Priority.ALWAYS);
         container.add(authorView, 3, 1, Priority.SOMETIMES);
         container.add(duration, 4, 1, Priority.SOMETIMES);
 
+        container.setMaxHeight(reference);
         container.setCache(false);
 
         container.getChildren().forEach(node ->
@@ -175,6 +142,30 @@ public class Track
         });
 
         return container;
+    }
+
+    public File data()
+    {
+        return data;
+    }
+
+    protected String identifier, author;
+    protected int plays;
+    protected File data;
+    protected String path;
+    protected long duration;
+
+    private Track()
+    {
+
+    }
+
+    protected Track(String identifier, String author, String path)
+    {
+        this.identifier = identifier;
+        this.author = author;
+        this.plays = 0;
+        this.path = path;
     }
 
     @Override

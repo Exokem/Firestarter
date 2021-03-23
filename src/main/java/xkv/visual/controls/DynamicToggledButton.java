@@ -19,9 +19,12 @@ public class DynamicToggledButton extends DynamicButton
 
     public void onClicked(MouseEvent value)
     {
-        selected = !selected;
-        view.setImage(selected ? selectedImage : unselectedImage);
-        hoveredView.setImage(selected ? selectedHoveredImage : unselectedHoveredImage);
+        if (this.onClicked.get())
+        {
+            selected = !selected;
+            view.setImage(selected ? selectedImage : unselectedImage);
+            hoveredView.setImage(selected ? selectedHoveredImage : unselectedHoveredImage);
+        }
     }
 
     public static DynamicToggledButton configure(Image unselected, Image unselectedHovered, Image selected, Image selectedHovered)

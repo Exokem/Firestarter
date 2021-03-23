@@ -51,8 +51,8 @@ public class AudionPanel extends StandardGridPane implements IStylable
         CONTENT_OVERARCH.add(AudionAlbumSelect.ALBUM_LIST, 1, 2);
         Platform.runLater(() ->
         {
-            CONTENT_OVERARCH.add(AudionPlayer.ICON, 1, 3);
-            CONTENT_OVERARCH.add(AudionPlayer.OVERLAY, 1, 3);
+            CONTENT_OVERARCH.add(AudionPlayer.View.ICON, 1, 3);
+            CONTENT_OVERARCH.add(AudionPlayer.View.OVERLAY, 1, 3);
         });
         CONTENT_OVERARCH.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 3, Priority.ALWAYS);
 

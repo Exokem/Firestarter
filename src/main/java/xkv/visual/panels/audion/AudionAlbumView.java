@@ -15,9 +15,9 @@ import xkv.ResourceLoader;
 import xkv.content.Album;
 import xkv.content.Track;
 import xkv.visual.VisualResourceLoader;
+import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
-import xkv.visual.images.StyledImageView;
 import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
@@ -201,22 +201,12 @@ public class AudionAlbumView
 
     private static StandardGridPane albumOptions()
     {
-        StyledImageView deleteIcon = new StyledImageView(DEL_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(deleteIcon, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+        DynamicButton deleteIcon = DynamicButton.configure(DEL_ICN, DEL_HOV).configureTooltip("Delete Album");
+        DynamicResizeable.addResizeListener(() -> deleteIcon.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+        deleteIcon.setOnMouseClicked(value -> deleteAlbum(activeAlbum));
 
-        deleteIcon.configureHover(DEL_ICN, DEL_HOV);
-        deleteIcon.configureTooltip("Delete Album");
-
-        deleteIcon.setOnMouseClicked(value ->
-        {
-            deleteAlbum(activeAlbum);
-        });
-
-        StyledImageView imageSelect = new StyledImageView(IMG_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(imageSelect, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
-
-        imageSelect.configureHover(IMG_ICN, IMG_HOV);
-        imageSelect.configureTooltip("Change Album Image");
+        DynamicButton imageSelect = DynamicButton.configure(IMG_ICN, IMG_HOV).configureTooltip("Change Album Image");
+        DynamicResizeable.addResizeListener(() -> imageSelect.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
 
         imageSelect.setOnMouseClicked(value ->
         {
@@ -229,11 +219,8 @@ public class AudionAlbumView
             }
         });
 
-        StyledImageView albumRename = new StyledImageView(ResourceLoader.RNM_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(albumRename, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
-
-        albumRename.configureHover(RNM_ICN, RNM_HOV);
-        albumRename.configureTooltip("Rename Album");
+        DynamicButton albumRename = DynamicButton.configure(RNM_ICN, RNM_HOV).configureTooltip("Rename Album");
+        DynamicResizeable.addResizeListener(() -> albumRename.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
 
         albumRename.setOnMouseClicked(value ->
         {
@@ -244,16 +231,9 @@ public class AudionAlbumView
             }
         });
 
-        StyledImageView trackImport = new StyledImageView(IMT_ICN);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(trackImport, 0.1D * ADN.IMAGE_VIEW.getFitHeight()));
-
-        trackImport.configureHover(IMT_ICN, IMT_HOV);
-        trackImport.configureTooltip("Import Tracks");
-
-        trackImport.setOnMouseClicked(value ->
-        {
-            ResourceLoader.importMultiTrackDialog(Firestarter.firestarter, "Import Tracks");
-        });
+        DynamicButton trackImport = DynamicButton.configure(IMT_ICN, IMT_HOV).configureTooltip("Import Tracks");
+        DynamicResizeable.addResizeListener(() -> trackImport.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+        trackImport.setOnMouseClicked(value -> ResourceLoader.importMultiTrackDialog(Firestarter.firestarter, "Import Tracks"));
 
         StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 4, Style.INSET);
 
