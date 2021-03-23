@@ -1,7 +1,7 @@
 package xkv.visual.panels.audion;
 
 import javafx.animation.FadeTransition;
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -12,19 +12,22 @@ import javafx.util.Duration;
 import xkv.Firestarter;
 import xkv.visual.HiddenRectangle;
 import xkv.visual.VisualResourceLoader;
+import xkv.visual.controls.DynamicButton;
+import xkv.visual.controls.DynamicToggledButton;
+import xkv.visual.controls.HoverLabel;
 import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
+import static xkv.ResourceLoader.*;
 import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
 
 public class AudionPlayer
 {
-    private static final Label TITLE = new Label("Track 1");
-    private static final Label AUTHOR = new Label("Author");
+    private static final HoverLabel TITLE = HoverLabel.configure("Track 1", "gray", "white", Style.SMALL_TITLE_BOLD);
+    private static final HoverLabel AUTHOR = HoverLabel.configure("Author", "gray", "white", Style.SUBTITLE);
 
-//    private static final StandardGridPane PROGRESS = progress();
     private static final ProgressBar PROGRESS = progressView();
 
     protected static final StandardGridPane OVERLAY = overlay();
@@ -39,24 +42,8 @@ public class AudionPlayer
     {
         ProgressBar progress = new ProgressBar();
 
-
-//        progress.setProgress(0.5D);
-
         return progress;
     }
-
-//    private static StandardGridPane progress()
-//    {
-//        StandardGridPane progress = new StandardGridPane();
-//
-//        Rectangle backing = new Rectangle(10, 0);
-//
-//        DynamicResizeable.addResizeListener(() -> backing.setWidth(progress.getWidth()));
-//
-//        Style.apply(progress, Style.DEBUG);
-//
-//        return progress;
-//    }
 
     private static double progressValue()
     {
@@ -87,18 +74,29 @@ public class AudionPlayer
 
     private static StandardGridPane overlay()
     {
-        StandardGridPane overlay = PaneFactory.autoPaddedGrid(0, 0, 1, 4, Style.RELATIVE);
+        StandardGridPane overlay = PaneFactory.autoPaddedGrid(0, 0, 1, 4);
 
         GridPane labels = new GridPane();
-        StandardGridPane status = PaneFactory.autoPaddedGrid(0, 1, 1);
+        StandardGridPane status = PaneFactory.autoPaddedGrid(0, 5, 2);
 
         labels.add(TITLE, 0, 0);
         labels.add(AUTHOR, 0, 1);
 
-        Style.apply(TITLE, Style.SMALL_TITLE_BOLD, Style.OVERLAY_TEXT);
-        Style.apply(AUTHOR, Style.SUBTITLE, Style.OVERLAY_TEXT);
+        DynamicButton shuffle = DynamicToggledButton.configure(RND_ICN, RND_HOV, RND_ONI, RND_ONH).configureTooltip("Randomize");
+        DynamicButton previous = DynamicButton.configure(PRE_ICN, PRE_HOV).configureTooltip("Previous");
+        DynamicToggledButton playPause = DynamicToggledButton.configure(PLA_ICN, PLA_HOV, PAU_ICN, PAU_HOV);
+        DynamicButton next = DynamicButton.configure(NXT_ICN, NXT_HOV).configureTooltip("Next");
+        DynamicButton repeat = DynamicToggledButton.configure(RPT_ICN, RPT_HOV, RPT_ONI, RPT_ONH).configureTooltip("Repeat");
 
-        status.add(PROGRESS, 1, 1, Priority.ALWAYS);
+        // TODO: button functionality
+
+        status.add(shuffle, 1, 1);
+        status.add(previous, 2, 1);
+        status.add(playPause, 3, 1);
+        status.add(next, 4, 1);
+        status.add(repeat, 5, 1);
+
+        status.setAlignment(Pos.CENTER);
 
         Rectangle upset = new Rectangle(0, 0);
         upset.setVisible(false);
@@ -109,8 +107,16 @@ public class AudionPlayer
 
             PROGRESS.setMaxWidth(SCALE * windowWidth);
             PROGRESS.setMaxHeight(0.015D * SCALE * windowWidth);
-            TITLE.setStyle(String.format("-fx-font-size: %f", 0.06D * SCALE * windowWidth));
-            AUTHOR.setStyle(String.format("-fx-font-size: %f", 0.04D * SCALE * windowWidth));
+            TITLE.resizeText(0.06D * SCALE * windowWidth);
+            AUTHOR.resizeText(0.04D * SCALE * windowWidth);
+
+            double actionSize = 0.18 * SCALE * windowWidth;
+
+            shuffle.resize(actionSize);
+            previous.resize(actionSize);
+            playPause.resize(actionSize);
+            next.resize(actionSize);
+            repeat.resize(actionSize);
         });
 
         final double inset = 14, insetAlt = 8;
@@ -119,6 +125,7 @@ public class AudionPlayer
         overlay.add(labels, 1, 1, Priority.ALWAYS);
         overlay.add(new BorderPane(), 1, 2, Priority.ALWAYS, Priority.ALWAYS);
         overlay.add(status, 1, 3, Priority.ALWAYS);
+        overlay.add(PROGRESS, 1, 4, Priority.ALWAYS);
         overlay.add(new HiddenRectangle(inset, inset), 0, 5);
         overlay.add(new HiddenRectangle(inset, inset), 2, 5);
         overlay.setOpacity(0.0D);
