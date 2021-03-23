@@ -38,7 +38,7 @@ public class AudionPlayer
         assert track != null;
 
         activeTrack = track;
-        activeAlbum = AudionAlbumView.activeAlbum;
+//        activeAlbum = Audion.Data.activeAlbum;
 
         return true;
     }

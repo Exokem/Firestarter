@@ -1,15 +1,23 @@
 package xkv.visual.panels.audion;
 
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import xkv.Firestarter;
+import xkv.ResourceLoader;
 import xkv.content.Album;
+import xkv.content.Track;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.AdjustableLabel;
+import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
 import xkv.visual.images.StyledImageView;
@@ -19,9 +27,12 @@ import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static xkv.ResourceLoader.*;
 import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
 
 /**
@@ -34,6 +45,12 @@ public final class Audion
 
     /** The internally accessible Album List. */
     private static final LinkedScrollPane<Button, Album> ALBUM_LIST = Components.albumList();
+
+    private static final StandardGridPane EMPTY_ALBUM_VIEW = Components.emptyPanel();
+
+    private static final StandardGridPane ALBUM_VIEW = Components.albumView();
+
+    private static final BorderPane ALBUM_VIEW_HOLDER = new BorderPane(EMPTY_ALBUM_VIEW);
 
     /** The externally accessible Audion Panel. */
     public static final StandardGridPane AUDION_PANEL = Components.audionPanel();
@@ -53,6 +70,12 @@ public final class Audion
 
         /* The list of all existent albums. */
         private static final List<Album> ALBUMS = new ArrayList<>();
+
+        private static final AdjustableLabel ACTIVE_ALBUM_TITLE = new AdjustableLabel("", Style.TITLE_BOLD);
+        private static final AdjustableLabel ACTIVE_ALBUM_SPAN = new AdjustableLabel("", Style.SUBTITLE);
+
+        private static Album activeAlbum = null;
+        private static Button activeAlbumButton = null;
     }
 
     /**
@@ -166,18 +189,86 @@ public final class Audion
      */
     public static void removeAlbum(Album album)
     {
+        Data.activeAlbum = null;
+        Data.activeAlbumButton = null;
         Data.ALBUMS.remove(album);
         ALBUM_LIST.remove(album);
+
+        if (Data.ALBUMS.isEmpty())
+        {
+            displayAlbum(null);
+        }
+
+        else
+        {
+            displayAlbum(ALBUM_LIST.top());
+        }
     }
 
-    public static Button topAlbumButton()
+    /**
+     * Updates the album view to display the album linked to the provided button.
+     *
+     * @param source The button linked to the album to display.
+     */
+    public static void displayAlbum(Button source)
     {
-        return ALBUM_LIST.top();
+        if (source == null)
+        {
+            ALBUM_VIEW_HOLDER.setCenter(EMPTY_ALBUM_VIEW);
+        }
+
+        else
+        {
+            boolean hasChanged = Data.activeAlbumButton != source;
+            Data.activeAlbum = ALBUM_LIST.getLink(source);
+            Data.activeAlbumButton = source;
+
+            updateAlbumView(hasChanged, hasChanged);
+            ALBUM_VIEW_HOLDER.setCenter(ALBUM_VIEW);
+        }
     }
 
-    public static Album albumFromLink(Button link)
+    /**
+     * Updates various properties of the album view to reflect changes that may have occurred. The track list for the
+     * currently displayed album will only be updated if the album has changed, or the track list has been updated.
+     *
+     * @param albumChanged Indicates that the displayed album has changed.
+     * @param updateList Indicates that the displayed track list should be updated.
+     */
+    private static void updateAlbumView(boolean albumChanged, boolean updateList)
     {
-        return ALBUM_LIST.getLink(link);
+        if (albumChanged)
+        {
+            updateList = albumChanged;
+
+            ADN.IMAGE_VIEW.setImage(Data.activeAlbum.image());
+            Data.ACTIVE_ALBUM_TITLE.setText(Data.activeAlbum.displayName());
+            Data.ACTIVE_ALBUM_SPAN.setText(Data.activeAlbum.formattedSpan());
+        }
+
+        if (!updateList) return;
+
+        ADN.TRACK_VIEW.clear();
+        Iterator<Track> iterator = Data.activeAlbum.iterator();
+
+        while (iterator.hasNext())
+        {
+            Track track = iterator.next();
+            ADN.TRACK_VIEW.link(track.forDisplay(), track);
+        }
+    }
+
+    /**
+     * Allows a collection of tracks to be imported into the currently displayed album.
+     *
+     * @param tracks The collection of {@link Track} objects to be imported.
+     */
+    public static void importTracks(Collection<Track> tracks)
+    {
+        if (Data.activeAlbum == null) return;
+
+        Data.activeAlbum.addTracks(tracks);
+        updateAlbumView(false, true);
     }
 
     /**
@@ -191,7 +282,7 @@ public final class Audion
     public static StyledButton addAlbum(Album album)
     {
         StyledButton button = new StyledButton(album.displayName());
-        button.setOnAction(value -> AudionAlbumView.openAlbum(button, album));
+        button.setOnAction(value -> Audion.displayAlbum(button));
 
         Data.ALBUMS.add(album);
         ALBUM_LIST.link(button, album);
@@ -246,9 +337,107 @@ public final class Audion
             audionPanel.latentAdd(AudionPlayer.View.ICON, 1 ,3);
             audionPanel.latentAdd(AudionPlayer.View.OVERLAY, 1, 3);
 
-            audionPanel.add(AudionAlbumView.albumContentPanel(), 2, 1, 1, 3, Priority.ALWAYS);
+            audionPanel.add(ALBUM_VIEW_HOLDER, 2, 1, 1, 3, Priority.ALWAYS);
 
             return audionPanel;
+        }
+
+        private static StandardGridPane emptyPanel()
+        {
+            Label empty = new Label("There's nothing here");
+            GridPane.setHalignment(empty, HPos.CENTER);
+            GridPane.setValignment(empty, VPos.BOTTOM);
+
+            empty.setAlignment(Pos.CENTER);
+            empty.setMaxWidth(Double.MAX_VALUE);
+
+            StyledButton create = new StyledButton("Create an Album");
+            GridPane.setHalignment(create, HPos.CENTER);
+            GridPane.setValignment(create, VPos.TOP);
+
+            create.setOnAction(value -> Audion.createAlbumPrompt());
+            create.addVisualStyle(Style.UI_BUTTON);
+
+            StandardGridPane emptyPanel = PaneFactory.autoPaddedGrid(10, 1, 2, Style.INSET);
+
+            emptyPanel.add(empty, 1, 1, Priority.ALWAYS, Priority.SOMETIMES);
+            emptyPanel.add(create, 1, 2, Priority.ALWAYS, Priority.SOMETIMES);
+
+            return emptyPanel;
+        }
+
+        private static StandardGridPane albumView()
+        {
+            StandardGridPane albumView = PaneFactory.autoPaddedGrid(10, 3, 2, Style.INSET);
+            GridPane.setHgrow(albumView, Priority.SOMETIMES);
+
+            BorderPane imageContainer = PaneFactory.styledBorderPane(ResourceLoader.ADN.IMAGE_VIEW, Style.INSET);
+
+            albumView.add(imageContainer, 1, 1);
+            albumView.add(albumOptions(), 2, 1);
+            albumView.add(albumDetails(), 3, 1, Priority.ALWAYS);
+            albumView.add(ResourceLoader.ADN.TRACK_VIEW, 1, 2, 3, 1, Priority.ALWAYS, Priority.ALWAYS);
+
+            return albumView;
+        }
+
+        private static StandardGridPane albumDetails()
+        {
+            StandardGridPane albumDetails = PaneFactory.autoPaddedGrid(10, 1, 2, Style.INSET);
+
+            GridPane.setValignment(Data.ACTIVE_ALBUM_TITLE, VPos.BOTTOM);
+            GridPane.setValignment(Data.ACTIVE_ALBUM_SPAN, VPos.TOP);
+
+            albumDetails.add(Data.ACTIVE_ALBUM_TITLE, 1, 2, Priority.ALWAYS);
+            albumDetails.add(Data.ACTIVE_ALBUM_SPAN, 1, 3, Priority.ALWAYS, Priority.SOMETIMES);
+
+            return albumDetails;
+        }
+
+        private static StandardGridPane albumOptions()
+        {
+            DynamicButton deleteIcon = DynamicButton.configure(DEL_ICN, DEL_HOV).configureTooltip("Delete Album");
+            DynamicResizeable.addResizeListener(() -> deleteIcon.resize(0.1D * ResourceLoader.ADN.IMAGE_VIEW.getFitHeight()));
+            deleteIcon.setOnMouseClicked(value -> removeAlbum(Data.activeAlbum));
+
+            DynamicButton imageSelect = DynamicButton.configure(IMG_ICN, IMG_HOV).configureTooltip("Change Album Image");
+            DynamicResizeable.addResizeListener(() -> imageSelect.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+
+            imageSelect.setOnMouseClicked(value ->
+            {
+                Image newImage = VisualResourceLoader.selectImageDialog(Firestarter.firestarter, "Select an Album Icon");
+
+                if (newImage != null && Data.activeAlbum != null)
+                {
+                    Data.activeAlbum.configureImage(newImage);
+                    ADN.IMAGE_VIEW.setImage(newImage);
+                }
+            });
+
+            DynamicButton albumRename = DynamicButton.configure(RNM_ICN, RNM_HOV).configureTooltip("Rename Album");
+            DynamicResizeable.addResizeListener(() -> albumRename.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+
+            albumRename.setOnMouseClicked(value ->
+            {
+                if (Data.activeAlbum != null)
+                {
+                    Stage renameStage = Firestarter.renameWindow("Rename Album", Data.activeAlbum.displayName(), Data.activeAlbum::rename, Data.activeAlbumButton::setText, Data.ACTIVE_ALBUM_TITLE::setText);
+                    renameStage.show();
+                }
+            });
+
+            DynamicButton trackImport = DynamicButton.configure(IMT_ICN, IMT_HOV).configureTooltip("Import Tracks");
+            DynamicResizeable.addResizeListener(() -> trackImport.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
+            trackImport.setOnMouseClicked(value -> ResourceLoader.importMultiTrackDialog(Firestarter.firestarter, "Import Tracks"));
+
+            StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 4, Style.INSET);
+
+            albumOptions.add(deleteIcon, 1, 1);
+            albumOptions.add(imageSelect, 1, 2);
+            albumOptions.add(albumRename, 1, 3);
+            albumOptions.add(trackImport, 1, 4);
+
+            return albumOptions;
         }
 
         /**
@@ -281,7 +470,7 @@ public final class Audion
 
                 promptStage.close();
 
-                AudionAlbumView.openAlbum(albumButton, album);
+                Audion.displayAlbum(albumButton);
             }), 2, 6, HPos.RIGHT);
 
             contentContainer.add(detailContainer, 2, 1, Priority.ALWAYS);

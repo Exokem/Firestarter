@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
@@ -13,11 +12,11 @@ import xkv.content.Track;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
+import xkv.visual.images.StyledImageView;
 import xkv.visual.panels.LinkedScrollPane;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 import xkv.visual.panels.audion.Audion;
-import xkv.visual.panels.audion.AudionAlbumView;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +116,7 @@ public class ResourceLoader
 
     public static final class ADN
     {
-        public static final ImageView IMAGE_VIEW = new ImageView();
+        public static final StyledImageView IMAGE_VIEW = new StyledImageView(null).autoResize(() -> Audion.scaleWidth(0.2D));
 
         public static final LinkedScrollPane<StandardGridPane, Track> TRACK_VIEW = new LinkedScrollPane<>(Style.INSET);
     }
@@ -343,8 +342,6 @@ public class ResourceLoader
             }
         }
 
-        AudionAlbumView.importTracks(importedTracks, INTO_LIBRARY.isSelected());
-
-        AudionAlbumView.refresh();
+        Audion.importTracks(importedTracks);
     }
 }

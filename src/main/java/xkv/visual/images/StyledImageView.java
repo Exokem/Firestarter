@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import xkv.visual.VisualResourceLoader;
 import xkv.visual.css.IStylable;
+import xkv.visual.panels.DynamicResizeable;
+
+import java.util.function.Supplier;
 
 public class StyledImageView extends ImageView implements IStylable
 {
@@ -16,6 +19,13 @@ public class StyledImageView extends ImageView implements IStylable
     {
         VisualResourceLoader.scaleImageView(this, size);
         return this;
+    }
+
+    public StyledImageView autoResize(Supplier<Double> sizeProvider)
+    {
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(this, sizeProvider.get()));
+
+        return this.resizeByDefault(sizeProvider.get());
     }
 
     public void configureTooltip(String tooltip)
