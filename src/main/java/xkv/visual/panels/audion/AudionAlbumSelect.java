@@ -22,14 +22,13 @@ import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
 import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
-import static xkv.visual.panels.audion.AudionPanel.addAlbum;
-import static xkv.visual.panels.audion.AudionPanel.createdAlbums;
+import static xkv.visual.panels.audion.Audion.addAlbum;
 
 public class AudionAlbumSelect
 {
     protected static final double SCALE = 0.195D;
 
-    protected static final double REFERENCE = AudionPanel.PANEL_WIDTH;
+    protected static final double REFERENCE = Audion.panelWidth();
 
     protected static final LinkedScrollPane<Button, Album> ALBUM_LIST = albumList();
 
@@ -82,7 +81,7 @@ public class AudionAlbumSelect
         StandardGridPane contentContainer = PaneFactory.autoPaddedGrid(10, 2, 1, Style.INSET);
         StandardGridPane promptContainer = PaneFactory.autoPaddedGrid(10, 1, 1);
 
-        String defaultTitle = String.format("Album %d", createdAlbums + 1);
+        String defaultTitle = String.format("Album %d", Audion.albumMeasure() + 1);
         Stage promptStage = Firestarter.subsidiary(defaultTitle, promptContainer);
 
         /// Image Selection

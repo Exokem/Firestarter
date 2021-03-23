@@ -33,4 +33,11 @@ public class StyledButton extends Button implements IStylable
 
         return this;
     }
+
+    public StyledButton action(Runnable action)
+    {
+        this.setOnAction(value -> action.run());
+
+        return this;
+    }
 }

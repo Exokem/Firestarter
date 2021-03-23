@@ -1,5 +1,6 @@
 package xkv.visual.panels;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -43,10 +44,8 @@ public class StandardGridPane extends GridPane implements IStylable
         }
     }
 
-    public void add(Node child, int columnIndex, int rowIndex, Priority... expansionPriorities)
+    private void applyPriorities(Node child, Priority... expansionPriorities)
     {
-        super.add(child, columnIndex, rowIndex);
-
         try
         {
             GridPane.setHgrow(child, expansionPriorities[0]);
@@ -55,27 +54,37 @@ public class StandardGridPane extends GridPane implements IStylable
         catch (IndexOutOfBoundsException | NullPointerException ignored)
         {
         }
+    }
+
+    public void latentAdd(Node child, int col, int row, int colspan, int rowspan, Priority... expansionPriorities)
+    {
+        Platform.runLater(() -> add(child, col, row, colspan, rowspan, expansionPriorities));
+    }
+
+    public void latentAdd(Node child, int col, int row, Priority... expansionPriorities)
+    {
+        Platform.runLater(() -> add(child, col, row, expansionPriorities));
+    }
+
+    public void add(Node child, int columnIndex, int rowIndex, Priority... expansionPriorities)
+    {
+        super.add(child, columnIndex, rowIndex);
+        applyPriorities(child, expansionPriorities);
     }
 
     public void add(Node child, int columnIndex, int rowIndex, int colSpan, int rowSpan, Priority... expansionPriorities)
     {
         super.add(child, columnIndex, rowIndex, colSpan, rowSpan);
-
-        try
-        {
-            GridPane.setHgrow(child, expansionPriorities[0]);
-            GridPane.setVgrow(child, expansionPriorities[1]);
-        }
-        catch (IndexOutOfBoundsException | NullPointerException ignored)
-        {
-        }
+        applyPriorities(child, expansionPriorities);
     }
 
+    @Deprecated
     public StyledButton addImageButton(ImageView imageHolder, int columnIndex, int rowIndex, Priority... expansionPriorities)
     {
         return addImageButton(imageHolder, columnIndex, rowIndex, 1, 1, expansionPriorities);
     }
 
+    @Deprecated
     public StyledButton addImageButton(ImageView imageHolder, int columnIndex, int rowIndex, int colSpan, int rowSpan, Priority... expansionPriorities)
     {
         StyledButton button = new StyledButton();

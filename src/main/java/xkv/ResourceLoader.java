@@ -16,8 +16,8 @@ import xkv.visual.css.Style;
 import xkv.visual.panels.LinkedScrollPane;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
+import xkv.visual.panels.audion.Audion;
 import xkv.visual.panels.audion.AudionAlbumView;
-import xkv.visual.panels.audion.AudionPanel;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,7 +183,7 @@ public class ResourceLoader
         Label ignore = new Label("Ignore");
         Label adjust = new Label("Adjust");
 
-        replace.setPrefWidth(0.17D * AudionPanel.PANEL_WIDTH);
+        replace.setPrefWidth(0.17D * Audion.panelWidth());
 
         ToggleGroup existingGroup = new ToggleGroup();
 
@@ -232,10 +232,10 @@ public class ResourceLoader
         StyledButton cancel = new StyledButton("Cancel"), impor = new StyledButton("Import");
         GridPane.setHalignment(impor, HPos.RIGHT);
 
-        cancel.setMaxWidth(0.05 * AudionPanel.PANEL_WIDTH);
+        cancel.setMaxWidth(0.05 * Audion.panelWidth());
         cancel.setOnAction(value -> importOptions.close());
 
-        impor.setMaxWidth(0.05 * AudionPanel.PANEL_WIDTH);
+        impor.setMaxWidth(0.05 * Audion.panelWidth());
         impor.setOnAction(value ->
         {
             if (!dirCheck.isSelected() || (dirCheck.isSelected() && !dirInput.getText().isEmpty()))

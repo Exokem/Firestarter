@@ -21,7 +21,7 @@ import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
-import xkv.visual.panels.audion.AudionPanel;
+import xkv.visual.panels.audion.Audion;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class Track
 
     public StandardGridPane forDisplay()
     {
-        final double reference = AudionPanel.PANEL_HEIGHT / 20;
+        final double reference = Audion.panelHeight() / 20;
 
         StandardGridPane container = PaneFactory.autoPaddedGrid(0, 2, 1, Style.SCROLLPANE_BUTTON);
 

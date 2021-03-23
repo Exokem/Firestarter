@@ -55,6 +55,8 @@ public class AudionPlayer
 
     protected static class View
     {
+        protected static void initialize() {}
+
         private static final HoverLabel TITLE = HoverLabel.configure("Track 1", "gray", "white", Style.SMALL_TITLE_BOLD);
         private static final HoverLabel AUTHOR = HoverLabel.configure("Author", "gray", "white", Style.SUBTITLE);
 
@@ -89,7 +91,7 @@ public class AudionPlayer
         {
             BorderPane iconContainer = PaneFactory.styledBorderPane(ICON_VIEW, Style.INSET);
 
-            iconContainer.setMaxWidth(SCALE * AudionPanel.PANEL_WIDTH);
+            iconContainer.setMaxWidth(SCALE * Audion.panelWidth());
 
             VisualResourceLoader.scaleImageView(ICON_VIEW, AudionAlbumSelect.ALBUM_PROVIDER.getWidth());
             DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.firestarter.getWidth()));

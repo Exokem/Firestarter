@@ -18,7 +18,7 @@ import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
-import xkv.visual.panels.audion.AudionPanel;
+import xkv.visual.panels.audion.Audion;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,10 +47,7 @@ public class Firestarter extends Application
         ResourceLoader.loadResources();
 
         firestarter = stage;
-
-        Display.initialize(stage);
-
-        container = Display.format();
+        container = Display.ROOT;
 
         Scene main = new Scene(container);
 
@@ -108,7 +105,7 @@ public class Firestarter extends Application
 
         fieldLabel.setMinWidth(Region.USE_PREF_SIZE);
 
-        rename.setPrefWidth(0.1D * AudionPanel.PANEL_WIDTH);
+        rename.setPrefWidth(0.1D * Audion.panelWidth());
         rename.addVisualStyle(Style.UI_BUTTON);
 
         rename.setOnAction(value ->

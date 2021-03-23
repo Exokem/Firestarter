@@ -3,7 +3,7 @@ package xkv.visual.panels;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import xkv.visual.css.Style;
-import xkv.visual.panels.audion.AudionPanel;
+import xkv.visual.panels.audion.Audion;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class LinkedScrollPane<ITEM extends Node, LINK> extends StandardScrollPan
         {
             Region region = (Region) item;
             region.setMaxWidth(Double.MAX_VALUE);
-            region.setMinHeight(AudionPanel.PANEL_HEIGHT / 20);
+            region.setMinHeight(Audion.panelHeight() / 20);
 
             Style.apply(region, Style.SCROLLPANE_BUTTON, Style.SQUARE);
         }

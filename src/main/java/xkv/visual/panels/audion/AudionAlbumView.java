@@ -38,7 +38,7 @@ public class AudionAlbumView
 
     private static final BorderPane ALBUM_CONTENT_PANEL = new BorderPane(EMPTY_PANEL);
 
-    protected static final double REFERENCE = AudionPanel.PANEL_WIDTH;
+    protected static final double REFERENCE = Audion.panelWidth();
 
     protected static BorderPane albumContentPanel()
     {
@@ -49,14 +49,13 @@ public class AudionAlbumView
 
     protected static void openFirstAlbum()
     {
-        if (!AudionPanel.albums.isEmpty())
+        if (Audion.albumMeasure() != 0)
         {
             openAlbum(AudionAlbumSelect.ALBUM_LIST.top());
             ALBUM_CONTENT_PANEL.setCenter(ALBUM_VIEW);
         }
         else
         {
-            AudionPanel.createdAlbums = 0;
             ALBUM_CONTENT_PANEL.setCenter(EMPTY_PANEL);
         }
     }
@@ -80,7 +79,7 @@ public class AudionAlbumView
 
     protected static void deleteAlbum(Album album)
     {
-        AudionPanel.albums.remove(album);
+        Audion.removeAlbum(album);
 
         AudionAlbumSelect.ALBUM_LIST.remove(album);
 
@@ -121,7 +120,7 @@ public class AudionAlbumView
         GridPane.setHgrow(albumView, Priority.SOMETIMES);
 
         VisualResourceLoader.scaleImageView(ADN.IMAGE_VIEW, 0.20D * REFERENCE);
-        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ADN.IMAGE_VIEW, 0.20D * AudionPanel.CONTENT_OVERARCH.getWidth()));
+        DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ADN.IMAGE_VIEW, 0.20D * Firestarter.firestarter.getWidth()));
 
         ADN.IMAGE_VIEW.maxWidth(albumView.getWidth());
         ADN.IMAGE_VIEW.maxHeight(albumView.getHeight());
@@ -150,10 +149,11 @@ public class AudionAlbumView
 
         if (intoLibrary)
         {
-            if (activeAlbum != AudionPanel.LIBRARY)
-            {
-                AudionPanel.LIBRARY.addTracks(tracks);
-            }
+            // TODO: decide library
+//            if (activeAlbum != Audion.LIBRARY)
+//            {
+//                Audion.LIBRARY.addTracks(tracks);
+//            }
         }
     }
 

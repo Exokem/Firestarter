@@ -1,24 +1,20 @@
 package xkv.visual;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
-import xkv.visual.panels.audion.AudionPanel;
+import xkv.visual.panels.audion.Audion;
 
 
 public class Display
 {
-    private static final StandardGridPane container = PaneFactory.autoPaddedGrid(10, 1, 1);
+    public static final StandardGridPane ROOT = root();
 
-    public static Pane format()
+    private static StandardGridPane root()
     {
-        return container;
-    }
+        StandardGridPane root = PaneFactory.autoPaddedGrid(10, 1, 1);
+        root.add(Audion.AUDION_PANEL, 1, 1, Priority.ALWAYS, Priority.ALWAYS);
 
-    public static void initialize(Stage stage)
-    {
-        container.add(AudionPanel.instance(), 1, 1, Priority.ALWAYS, Priority.ALWAYS);
+        return root;
     }
 }

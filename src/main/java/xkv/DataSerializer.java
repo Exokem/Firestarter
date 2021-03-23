@@ -3,7 +3,7 @@ package xkv;
 import org.json.JSONException;
 import org.json.JSONObject;
 import xkv.content.Album;
-import xkv.visual.panels.audion.AudionPanel;
+import xkv.visual.panels.audion.Audion;
 
 import java.io.*;
 import java.util.logging.Level;
@@ -27,7 +27,7 @@ public class DataSerializer
     {
         validate();
 
-        AudionPanel.albums().forEach(album ->
+        Audion.forEachAlbum(album ->
         {
             JSONObject albumJSON = album.serialize();
 
@@ -81,7 +81,7 @@ public class DataSerializer
 
                     JSONObject albumJSON = new JSONObject(jsonBuilder.toString());
                     Album album = Album.deserialize(albumJSON);
-                    AudionPanel.addAlbum(album);
+                    Audion.addAlbum(album);
                 }
 
                 catch (IOException | JSONException e)
