@@ -1,27 +1,31 @@
 package xkv;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import xkv.content.Album;
 import xkv.visual.panels.audion.AudionPanel;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.Level;
 
 public class DataSerializer
 {
-    public static void serializeAlbums()
+    private static String directory = ResourceLoader.ResourceHeader.ALBUM_DATA.header();
+
+    private static File directoryFile = new File(directory);
+
+    private static void validate()
     {
-        String directory = ResourceLoader.ResourceHeader.ALBUM_DATA.header();
-
-        File directoryFile = new File(directory);
-
         if (!directoryFile.exists() && !directoryFile.mkdir())
         {
             Firestarter.OUTPUT.log(Level.SEVERE, "Fatal serialization error: album data directory creation failed");
             System.exit(69);
         }
+    }
+
+    public static void serializeAlbums()
+    {
+        validate();
 
         AudionPanel.albums().forEach(album ->
         {
@@ -50,14 +54,41 @@ public class DataSerializer
             {
 
             }
-
-
-
         });
     }
 
     public static void deserializeAlbums()
     {
+        validate();
 
+        File[] files = directoryFile.listFiles();
+
+        if (files == null || files.length <= 0)
+        {
+            return;
+        }
+
+        for (File file : files)
+        {
+            if (file.exists())
+            {
+                try
+                {
+                    BufferedReader fileReader = new BufferedReader(new FileReader(file));
+                    StringBuilder jsonBuilder = new StringBuilder();
+
+                    fileReader.lines().forEachOrdered(jsonBuilder::append);
+
+                    JSONObject albumJSON = new JSONObject(jsonBuilder.toString());
+                    Album album = Album.deserialize(albumJSON);
+                    AudionPanel.addAlbum(album);
+                }
+
+                catch (IOException | JSONException e)
+                {
+                    Firestarter.OUTPUT.log(Level.WARNING, e.getLocalizedMessage());
+                }
+            }
+        }
     }
 }

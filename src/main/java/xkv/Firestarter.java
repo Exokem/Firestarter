@@ -58,6 +58,8 @@ public class Firestarter extends Application
         loadCSS(main, "visual");
         loadCSS(main, "controls");
 
+        DataSerializer.deserializeAlbums();
+
         stage.setScene(main);
         stage.setTitle(TITLE);
 
