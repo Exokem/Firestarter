@@ -55,9 +55,6 @@ public class Track
             track.identifier = audioTag.getFirstField(FieldKey.TITLE).toString();
             track.author = audioTag.getFirstField(FieldKey.ALBUM_ARTIST).toString();
 
-//            String seconds = audioTag.getFirstField(GenericAudioHeader.FIELD_LENGTH).toString();
-//            System.out.println(seconds);
-
         } catch (CannotReadException e)
         {
             e.printStackTrace();
@@ -184,10 +181,10 @@ public class Track
         return track;
     }
 
-    protected String identifier, author;
-    protected int plays;
+    protected String identifier = "Corrupted Track", author = "Unknown Author";
+    protected int plays = 0;
     protected File data;
-    protected String path;
+    protected String path = "";
     protected long duration;
 
     private Track()

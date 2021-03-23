@@ -4,13 +4,11 @@ import javafx.scene.image.Image;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import xkv.Firestarter;
 import xkv.util.Time;
 import xkv.visual.VisualResourceLoader;
 
 import java.time.Instant;
 import java.util.*;
-import java.util.logging.Level;
 
 public class Album
 {
@@ -55,7 +53,7 @@ public class Album
     }
 
     private static final String
-            AM_KEY = "album", AT_KEY = "attributes", TK_KEY = "tracks",
+            IN_KEY = "icon", AT_KEY = "attributes", TK_KEY = "tracks",
             ID_KEY = "identifier", DN_KEY = "display_name", DC_KEY = "instanced";
 
     public JSONObject serialize()
@@ -64,6 +62,7 @@ public class Album
         attributes.put(ID_KEY, identifier);
         attributes.put(DN_KEY, displayName);
         attributes.put(DC_KEY, created.getTime());
+        attributes.put(IN_KEY, image.getUrl());
 
         JSONArray trackArray = new JSONArray();
         tracks.forEach(track -> trackArray.put(track.serialize()));
@@ -71,8 +70,6 @@ public class Album
         JSONObject albumJson = new JSONObject();
         albumJson.put(AT_KEY, attributes);
         albumJson.put(TK_KEY, trackArray);
-
-        Firestarter.OUTPUT.log(Level.INFO, albumJson.toString());
 
         return albumJson;
     }
@@ -83,6 +80,12 @@ public class Album
         Album album = new Album(attributes.getString(ID_KEY));
         album.displayName = attributes.getString(DN_KEY);
         album.created = new Date(attributes.getLong(DC_KEY));
+        try
+        {
+            album.image = new Image(attributes.getString(IN_KEY));
+        }
+
+        catch (JSONException ignored) {}
 
         JSONArray tracks = albumJson.getJSONArray(TK_KEY);
         for (int indx = 0; indx < tracks.length(); indx ++)
