@@ -1,33 +1,19 @@
 package xkv.content;
 
 import javafx.scene.image.Image;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import xkv.Firestarter;
 import xkv.util.Time;
 import xkv.visual.VisualResourceLoader;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.logging.Level;
 
 public class Album
 {
-    private final List<Track> tracks = new ArrayList<>();
-
-    private final Date created;
-
-    protected final String identifier;
-
-    protected String displayName;
-
-    protected Image image;
-
-    protected long duration = 0;
-
-    protected Album(String identifier)
-    {
-        this.identifier = identifier;
-        this.displayName = identifier;
-        this.created = Date.from(Instant.now());
-    }
-
     public static Album empty(String identifier)
     {
         return new Album(identifier);
@@ -46,6 +32,65 @@ public class Album
     public String displayName()
     {
         return displayName;
+    }
+
+    public String identifier()
+    {
+        return identifier;
+    }
+
+    private final List<Track> tracks = new ArrayList<>();
+    private Date created;
+
+    protected final String identifier;
+    protected String displayName;
+    protected Image image;
+    protected long duration = 0;
+
+    protected Album(String identifier)
+    {
+        this.identifier = identifier;
+        this.displayName = identifier;
+        this.created = Date.from(Instant.now());
+    }
+
+    private static final String
+            AM_KEY = "album", AT_KEY = "attributes", TK_KEY = "tracks",
+            ID_KEY = "identifier", DN_KEY = "display_name", DC_KEY = "instanced";
+
+    public JSONObject serialize()
+    {
+        JSONObject attributes = new JSONObject();
+        attributes.put(ID_KEY, identifier);
+        attributes.put(DN_KEY, displayName);
+        attributes.put(DC_KEY, created.getTime());
+
+        JSONArray trackArray = new JSONArray();
+        tracks.forEach(track -> trackArray.put(track.serialize()));
+
+        JSONObject albumJson = new JSONObject();
+        albumJson.put(AT_KEY, attributes);
+        albumJson.put(TK_KEY, trackArray);
+
+        Firestarter.OUTPUT.log(Level.INFO, albumJson.toString());
+
+        return albumJson;
+    }
+
+    public static Album deserialize(JSONObject albumJson) throws JSONException
+    {
+        JSONObject attributes = albumJson.getJSONObject(AT_KEY);
+        Album album = new Album(attributes.getString(ID_KEY));
+        album.displayName = attributes.getString(DN_KEY);
+        album.created = new Date(attributes.getLong(DC_KEY));
+
+        JSONArray tracks = albumJson.getJSONArray(TK_KEY);
+        for (int indx = 0; indx < tracks.length(); indx ++)
+        {
+            album.addTrack(Track.deserialize(tracks.getJSONObject(indx)));
+        }
+
+        return album;
     }
 
     public String formattedDate()

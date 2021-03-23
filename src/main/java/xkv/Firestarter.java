@@ -67,6 +67,13 @@ public class Firestarter extends Application
         main.heightProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(DynamicResizeable::resizeAll));
     }
 
+    @Override
+    public void stop() throws Exception
+    {
+        super.stop();
+        DataSerializer.serializeAlbums();
+    }
+
     public static Stage subsidiary(String title, Parent root)
     {
         Stage subsidiaryStage = new Stage();

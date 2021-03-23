@@ -11,6 +11,8 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import xkv.Firestarter;
 import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.StyledButton;
@@ -46,6 +48,7 @@ public class Track
         try
         {
             AudioFile audioFile = AudioFileIO.read(file);
+            track.path = file.getAbsolutePath();
 
             Tag audioTag = audioFile.getTag();
 
@@ -147,6 +150,38 @@ public class Track
     public File data()
     {
         return data;
+    }
+
+    private static final String
+            TK_KEY = "track", AT_KEY = "attributes",
+            ID_KEY = "identifier", AU_KEY = "author", PY_KEY = "iterations", FD_KEY = "path";
+
+    public JSONObject serialize()
+    {
+        JSONObject attributes = new JSONObject();
+        attributes.put(ID_KEY, identifier);
+        attributes.put(AU_KEY, author);
+        attributes.put(PY_KEY, plays);
+        attributes.put(FD_KEY, path);
+
+        JSONObject trackJson = new JSONObject();
+        trackJson.put(AT_KEY, attributes);
+
+        return trackJson;
+    }
+
+    public static Track deserialize(JSONObject trackJson) throws JSONException
+    {
+        Track track = empty();
+
+        JSONObject attributes = trackJson.getJSONObject(AT_KEY);
+        track.identifier = attributes.getString(ID_KEY);
+        track.author = attributes.getString(AU_KEY);
+        track.plays = attributes.getInt(PY_KEY);
+        track.path = attributes.getString(FD_KEY);
+        track.data = new File(track.path);
+
+        return track;
     }
 
     protected String identifier, author;

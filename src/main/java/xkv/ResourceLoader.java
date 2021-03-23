@@ -125,7 +125,7 @@ public class ResourceLoader
     public enum ResourceHeader
     {
         ALBUM_ICONS("icon/album/"), UI_BUTTONS("assets/ui/buttons/"),
-        EXTERNAL_AUDIO(DATA + "audio/");
+        EXTERNAL_AUDIO(DATA + "audio/"), ALBUM_DATA(DATA + "albums/");
 
         String header;
 
