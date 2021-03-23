@@ -56,6 +56,28 @@ public class ResourceLoader
     public static final Image IMT_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "import_track.png");
     public static final Image IMT_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "import_track_hover.png");
 
+    public static final Image PLA_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "player_play.png");
+    public static final Image PLA_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "player_play_hover.png");
+
+    public static final Image PAU_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "player_pause.png");
+    public static final Image PAU_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "player_pause_hover.png");
+
+    public static final Image NXT_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "player_next.png");
+    public static final Image NXT_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "player_next_hover.png");
+
+    public static final Image PRE_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "player_prev.png");
+    public static final Image PRE_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "player_prev_hover.png");
+
+    public static final Image RND_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "player_rand.png");
+    public static final Image RND_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "player_rand_hover.png");
+    public static final Image RND_ONI = VisualResourceLoader.loadImage(UI_BUTTONS, "player_rand_on.png");
+    public static final Image RND_ONH = VisualResourceLoader.loadImage(UI_BUTTONS, "player_rand_on_hover.png");
+
+    public static final Image RPT_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "player_loop.png");
+    public static final Image RPT_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "player_loop_hover.png");
+    public static final Image RPT_ONI = VisualResourceLoader.loadImage(UI_BUTTONS, "player_loop_on.png");
+    public static final Image RPT_ONH = VisualResourceLoader.loadImage(UI_BUTTONS, "player_loop_on_hover.png");
+
     public static final class SETUP
     {
         protected static void loadData()
