@@ -3,6 +3,7 @@ package xkv.visual.panels.audion;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import org.json.JSONException;
 import xkv.content.Album;
 import xkv.content.Track;
 import xkv.visual.controls.StyledButton;
@@ -67,9 +68,24 @@ public class AudionPanel extends StandardGridPane implements IStylable
 
         LIBRARY.addTrack(testTrack);
         LIBRARY.addTrack(track2);
+
+        try
+        {
+            addAlbum(Album.deserialize(LIBRARY.serialize()));
+        }
+
+        catch (JSONException ignored)
+        {
+
+        }
     }
 
     protected static final List<Album> albums = new ArrayList<>();
+
+    public static List<Album> albums()
+    {
+        return albums;
+    }
 
     protected static StyledButton addAlbum(Album album)
     {

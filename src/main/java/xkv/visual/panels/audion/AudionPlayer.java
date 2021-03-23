@@ -31,7 +31,27 @@ public class AudionPlayer
     private static Track activeTrack = null;
     private static Album activeAlbum = null;
 
+    private static boolean randomize = false, repeat = false;
 
+    public static boolean activate(Track track)
+    {
+        assert track != null;
+
+        activeTrack = track;
+        activeAlbum = AudionAlbumView.activeAlbum;
+
+        return true;
+    }
+
+    public static boolean activable()
+    {
+        return activeTrack != null && activeAlbum != null && !active;
+    }
+
+    public static boolean deactivable()
+    {
+        return active;
+    }
 
     protected static class View
     {
@@ -53,11 +73,6 @@ public class AudionPlayer
             ProgressBar progress = new ProgressBar();
 
             return progress;
-        }
-
-        private static double progressValue()
-        {
-            return 0.0D;
         }
 
         private static FadeTransition overlayFade()
@@ -92,11 +107,30 @@ public class AudionPlayer
             labels.add(TITLE, 0, 0);
             labels.add(AUTHOR, 0, 1);
 
-            DynamicButton shuffle = DynamicToggledButton.configure(RND_ICN, RND_HOV, RND_ONI, RND_ONH).configureTooltip("Randomize");
-            DynamicButton previous = DynamicButton.configure(PRE_ICN, PRE_HOV).configureTooltip("Previous");
             DynamicToggledButton playPause = DynamicToggledButton.configure(PLA_ICN, PLA_HOV, PAU_ICN, PAU_HOV);
+            playPause.setAction(() ->
+            {
+                if (playPause.selected()) return activable();
+                return deactivable();
+            });
+
+            DynamicButton previous = DynamicButton.configure(PRE_ICN, PRE_HOV).configureTooltip("Previous");
+
             DynamicButton next = DynamicButton.configure(NXT_ICN, NXT_HOV).configureTooltip("Next");
-            DynamicButton repeat = DynamicToggledButton.configure(RPT_ICN, RPT_HOV, RPT_ONI, RPT_ONH).configureTooltip("Repeat");
+
+            DynamicToggledButton shuffle = (DynamicToggledButton) DynamicToggledButton.configure(RND_ICN, RND_HOV, RND_ONI, RND_ONH).configureTooltip("Randomize");
+            shuffle.setAction(() ->
+            {
+                randomize = shuffle.selected();
+                return true;
+            });
+
+            DynamicToggledButton repeat = (DynamicToggledButton) DynamicToggledButton.configure(RPT_ICN, RPT_HOV, RPT_ONI, RPT_ONH).configureTooltip("Repeat");
+            repeat.setAction(() ->
+            {
+                AudionPlayer.repeat = repeat.selected();
+                return true;
+            });
 
             // TODO: button functionality
 

@@ -30,7 +30,7 @@ import static xkv.ResourceLoader.*;
 
 public class AudionAlbumView
 {
-    private static Album activeAlbum;
+    protected static Album activeAlbum;
     private static Button albumButton;
 
     private static final StandardGridPane EMPTY_PANEL = emptyPanel();

@@ -5,6 +5,11 @@ import javafx.scene.input.MouseEvent;
 
 public class DynamicToggledButton extends DynamicButton
 {
+    public boolean selected()
+    {
+        return selected;
+    }
+
     private Image unselectedImage, unselectedHoveredImage;
     private Image selectedImage, selectedHoveredImage;
 
