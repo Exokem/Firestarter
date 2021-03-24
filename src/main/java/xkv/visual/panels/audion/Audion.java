@@ -84,7 +84,7 @@ public final class Audion
      */
     public enum Scale
     {
-        MINOR(0.195D);
+        MINOR(0.195D), MAJOR(0.805);
 
         final double factor;
 
@@ -385,10 +385,12 @@ public final class Audion
         {
             StandardGridPane albumDetails = PaneFactory.autoPaddedGrid(10, 1, 2, Style.INSET);
 
+            final Label blank = new Label("");
+
             GridPane.setValignment(Data.ACTIVE_ALBUM_TITLE, VPos.BOTTOM);
             GridPane.setValignment(Data.ACTIVE_ALBUM_SPAN, VPos.TOP);
 
-            albumDetails.add(Data.ACTIVE_ALBUM_TITLE, 1, 2, Priority.ALWAYS);
+            albumDetails.add(Data.ACTIVE_ALBUM_TITLE, 1, 2, Priority.ALWAYS, Priority.SOMETIMES);
             albumDetails.add(Data.ACTIVE_ALBUM_SPAN, 1, 3, Priority.ALWAYS, Priority.SOMETIMES);
 
             return albumDetails;

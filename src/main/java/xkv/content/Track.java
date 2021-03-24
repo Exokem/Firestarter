@@ -1,8 +1,5 @@
 package xkv.content;
 
-import javafx.geometry.Pos;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -13,21 +10,11 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.json.JSONException;
 import org.json.JSONObject;
-import xkv.Firestarter;
-import xkv.visual.controls.DynamicButton;
-import xkv.visual.controls.StyledButton;
-import xkv.visual.css.IStylable;
-import xkv.visual.css.Style;
-import xkv.visual.panels.DynamicResizeable;
-import xkv.visual.panels.PaneFactory;
+import xkv.visual.controls.TrackDisplay;
 import xkv.visual.panels.StandardGridPane;
-import xkv.visual.panels.audion.Audion;
 
 import java.io.File;
 import java.io.IOException;
-
-import static xkv.ResourceLoader.TRK_HOV;
-import static xkv.ResourceLoader.TRK_ICN;
 
 public class Track
 {
@@ -90,58 +77,7 @@ public class Track
 
     public StandardGridPane forDisplay()
     {
-        final double reference = Audion.panelHeight() / 20;
-
-        StandardGridPane container = PaneFactory.autoPaddedGrid(0, 2, 1, Style.SCROLLPANE_BUTTON);
-
-        DynamicButton play = DynamicButton.configure(TRK_ICN, TRK_HOV).configureTooltip("Play this track");
-        StyledButton identifierView = new StyledButton(identifier);
-        StyledButton authorView = new StyledButton(author);
-        StyledButton duration = new StyledButton("0:00");
-
-        play.resize(reference);
-
-        DynamicResizeable.addResizeListener(() -> play.resize(container.getHeight()));
-
-        identifierView.setMaxWidth(Double.MAX_VALUE);
-        identifierView.setAlignment(Pos.CENTER_LEFT);
-
-        authorView.setPrefWidth(reference * 5);
-        authorView.setAlignment(Pos.CENTER_LEFT);
-
-        duration.setMaxWidth(reference * 3);
-        duration.setMinWidth(reference * 3);
-        duration.setAlignment(Pos.CENTER_RIGHT);
-
-        DynamicResizeable.addResizeListener(() -> authorView.setPrefWidth(Firestarter.container.getWidth() / 30 * 5));
-
-        container.add(play, 1, 1, Priority.NEVER);
-        container.add(identifierView, 2, 1, Priority.ALWAYS);
-        container.add(authorView, 3, 1, Priority.SOMETIMES);
-        container.add(duration, 4, 1, Priority.SOMETIMES);
-
-        container.setMaxHeight(reference);
-        container.setCache(false);
-
-        container.getChildren().forEach(node ->
-        {
-            if (node instanceof IStylable)
-            {
-                IStylable stylable = (IStylable) node;
-
-                stylable.addVisualStyle(Style.SPBC);
-            }
-
-            if (node instanceof StyledButton)
-            {
-                StyledButton button = (StyledButton) node;
-                button.setMaxHeight(Double.MAX_VALUE);
-                GridPane.setVgrow(button, Priority.ALWAYS);
-                button.setCache(false);
-            }
-        });
-
-        return container;
+        return display.getAndUpdate();
     }
 
     public File data()
@@ -186,6 +122,7 @@ public class Track
     protected File data;
     protected String path = "";
     protected long duration;
+    private final TrackDisplay display = new TrackDisplay(this);
 
     private Track()
     {

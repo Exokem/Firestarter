@@ -80,10 +80,12 @@ public class DynamicButton extends StandardGridPane
         this.action = action;
     }
 
-    public void resize(double dimension)
+    public DynamicButton resize(double dimension)
     {
         VisualResourceLoader.scaleImageView(view, dimension);
         VisualResourceLoader.scaleImageView(hoveredView, dimension);
+
+        return this;
     }
 
     public DynamicButton configureTooltip(String tooltip)

@@ -9,14 +9,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.IStylable;
+import xkv.visual.css.Style;
 
 public class StandardGridPane extends GridPane implements IStylable
 {
     public static final int DEFAULT_SPACING = 10;
 
-    public StandardGridPane()
+    public StandardGridPane(Style... styles)
     {
-
+        this.addVisualStyle(styles);
     }
 
     protected StandardGridPane(double gap, int columns, int rows)

@@ -55,6 +55,12 @@
   -fx-font-family: 'IBM Plex Sans', sans-serif;
 }
 
+.medium-subtitle {
+  -fx-font-weight: 400;
+  -fx-font-size: 14;
+  -fx-font-family: 'IBM Plex Sans', sans-serif;
+}
+
 .overlay-text .text {
   -fx-fill: gray;
   /* -fx-font-size: 3rem; */
