@@ -3,7 +3,7 @@ package xkv.visual.images;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import xkv.visual.VisualResourceLoader;
+import xkv.data.VisualResourceLoader;
 import xkv.visual.css.IStylable;
 import xkv.visual.panels.DynamicResizeable;
 
@@ -11,10 +11,6 @@ import java.util.function.Supplier;
 
 public class StyledImageView extends ImageView implements IStylable
 {
-    public StyledImageView(Image image) {
-        super(image);
-    }
-
     public StyledImageView resizeByDefault(double size)
     {
         VisualResourceLoader.scaleImageView(this, size);
@@ -48,5 +44,9 @@ public class StyledImageView extends ImageView implements IStylable
                 this.setImage(normal);
             }
         });
+    }
+
+    public StyledImageView(Image image) {
+        super(image);
     }
 }

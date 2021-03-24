@@ -1,4 +1,4 @@
-package xkv;
+package xkv.data;
 
 import javafx.application.Platform;
 import javafx.geometry.HPos;
@@ -8,8 +8,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import xkv.Firestarter;
 import xkv.content.Track;
-import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
 import xkv.visual.images.StyledImageView;
@@ -25,20 +25,14 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
-import static xkv.Firestarter.OUTPUT;
-import static xkv.ResourceLoader.ResourceHeader.EXTERNAL_AUDIO;
-import static xkv.ResourceLoader.ResourceHeader.UI_BUTTONS;
+import static xkv.Firestarter.*;
+import static xkv.data.ResourceLoader.ResourceHeader.EXTERNAL_AUDIO;
+import static xkv.data.ResourceLoader.ResourceHeader.UI_BUTTONS;
 
 public class ResourceLoader
 {
     private static final String DATA = "./data/";
-
-    protected static void loadResources()
-    {
-
-    }
 
     public static final Image TRK_ICN = VisualResourceLoader.loadImage(UI_BUTTONS, "play_button.png");
     public static final Image TRK_HOV = VisualResourceLoader.loadImage(UI_BUTTONS, "play_button_hover.png");
@@ -79,7 +73,7 @@ public class ResourceLoader
 
     public static final class SETUP
     {
-        protected static void loadData()
+        public static void loadData()
         {
             File dataDir = new File(DATA);
             createDir(dataDir);
@@ -99,14 +93,14 @@ public class ResourceLoader
             {
                 if (!file.mkdir())
                 {
-                    OUTPUT.log(Level.SEVERE, "Critical initialization failure: missing data directory could not be created");
+                    severe("Critical initialization failure: missing data directory could not be created");
                     System.exit(-999);
                 }
             }
 
             if (!file.isDirectory())
             {
-                OUTPUT.log(Level.SEVERE, "Critical initialization failure: invalid data directory");
+                severe("Critical initialization failure: invalid data directory");
                 System.exit(-998);
             }
 
@@ -283,7 +277,7 @@ public class ResourceLoader
         {
             if (!directory.mkdir())
             {
-                OUTPUT.log(Level.WARNING, String.format("Import failure; directory %s could not be created", dirPath));
+                warning(String.format("Import failure; directory %s could not be created", dirPath));
                 return;
             }
         }
@@ -328,16 +322,16 @@ public class ResourceLoader
 
                 importedTracks.add(Track.fromFile(internal));
 
-                OUTPUT.log(Level.INFO, String.format("Successfully imported %s", internal.getAbsolutePath()));
+                info(String.format("Successfully imported %s", internal.getAbsolutePath()));
             }
             catch (FileAlreadyExistsException f)
             {
-                OUTPUT.log(Level.WARNING, String.format("Skipping import for %s, file already exists", internal.getAbsolutePath()));
+                warning(String.format("Skipping import for %s, file already exists", internal.getAbsolutePath()));
                 existingFiles.add(internal);
             }
             catch (IOException e)
             {
-                OUTPUT.log(Level.WARNING, String.format("Skipping import for %s, unexpected failure", internal.getAbsolutePath()));
+                warning(String.format("Skipping import for %s, unexpected failure", internal.getAbsolutePath()));
                 copyFailures.add(internal);
             }
         }

@@ -8,9 +8,10 @@ import xkv.visual.css.Style;
 import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.StandardGridPane;
 import xkv.visual.panels.audion.Audion;
+import xkv.visual.panels.audion.AudionPlayer;
 
-import static xkv.ResourceLoader.TRK_HOV;
-import static xkv.ResourceLoader.TRK_ICN;
+import static xkv.data.ResourceLoader.TRK_HOV;
+import static xkv.data.ResourceLoader.TRK_ICN;
 
 public class TrackDisplay
 {
@@ -49,7 +50,11 @@ public class TrackDisplay
 
         double height = Audion.panelHeight() / 20;
 
-        final DynamicButton play = DynamicButton.configure(TRK_ICN, TRK_HOV).configureTooltip("Play this track").resize(height);
+        final DynamicButton play = DynamicButton.configure(TRK_ICN, TRK_HOV)
+                .configureTooltip("Play this track")
+                .resize(height)
+                .bindAction(() -> AudionPlayer.activate(track))
+                .bindQualifier(AudionPlayer::activable);
 
         DynamicResizeable.addResizeListener(() ->
         {

@@ -12,8 +12,8 @@ import javafx.util.Duration;
 import xkv.Firestarter;
 import xkv.content.Album;
 import xkv.content.Track;
+import xkv.data.VisualResourceLoader;
 import xkv.visual.HiddenRectangle;
-import xkv.visual.VisualResourceLoader;
 import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.DynamicToggledButton;
 import xkv.visual.controls.HoverLabel;
@@ -22,8 +22,11 @@ import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
-import static xkv.ResourceLoader.*;
-import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
+import javax.sound.sampled.*;
+import java.io.IOException;
+
+import static xkv.data.ResourceLoader.*;
+import static xkv.data.VisualResourceLoader.DEFAULT_IMAGE;
 
 public class AudionPlayer
 {
@@ -40,12 +43,31 @@ public class AudionPlayer
         activeTrack = track;
 //        activeAlbum = Audion.Data.activeAlbum;
 
+        try
+        {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(track.data());
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+
+
+        }
+
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+        {
+            e.printStackTrace();
+
+            return false;
+        }
+
         return true;
     }
 
     public static boolean activable()
     {
-        return activeTrack != null && activeAlbum != null && !active;
+        return !active;
     }
 
     public static boolean deactivable()
@@ -93,8 +115,8 @@ public class AudionPlayer
 
             iconContainer.setMaxWidth(SCALE * Audion.panelWidth());
 
-            VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.firestarter.getWidth());
-            DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.firestarter.getWidth()));
+            VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.width());
+            DynamicResizeable.addResizeListener(() -> VisualResourceLoader.scaleImageView(ICON_VIEW, SCALE * Firestarter.width()));
 
             return iconContainer;
         }
@@ -141,7 +163,7 @@ public class AudionPlayer
 
             DynamicResizeable.addResizeListener(() ->
             {
-                double windowWidth = Firestarter.firestarter.getWidth();
+                double windowWidth = Firestarter.width();
 
                 PROGRESS.setMaxWidth(SCALE * windowWidth);
                 PROGRESS.setMaxHeight(0.015D * SCALE * windowWidth);

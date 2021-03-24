@@ -1,20 +1,11 @@
 package xkv.content;
 
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import xkv.visual.controls.TrackDisplay;
 import xkv.visual.panels.StandardGridPane;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Track
 {
@@ -32,32 +23,7 @@ public class Track
     {
         Track track = new Track();
 
-        try
-        {
-            AudioFile audioFile = AudioFileIO.read(file);
-            track.path = file.getAbsolutePath();
 
-            Tag audioTag = audioFile.getTag();
-
-            track.identifier = audioTag.getFirstField(FieldKey.TITLE).toString();
-            track.author = audioTag.getFirstField(FieldKey.ALBUM_ARTIST).toString();
-
-        } catch (CannotReadException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        } catch (TagException e)
-        {
-            e.printStackTrace();
-        } catch (ReadOnlyFileException e)
-        {
-            e.printStackTrace();
-        } catch (InvalidAudioFrameException e)
-        {
-            e.printStackTrace();
-        } catch (NullPointerException ignored) {}
 
 
         track.data = file;

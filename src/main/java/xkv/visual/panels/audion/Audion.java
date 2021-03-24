@@ -12,10 +12,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import xkv.Firestarter;
-import xkv.ResourceLoader;
 import xkv.content.Album;
 import xkv.content.Track;
-import xkv.visual.VisualResourceLoader;
+import xkv.data.ResourceLoader;
+import xkv.data.VisualResourceLoader;
 import xkv.visual.controls.AdjustableLabel;
 import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.StyledButton;
@@ -32,8 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static xkv.ResourceLoader.*;
-import static xkv.visual.VisualResourceLoader.DEFAULT_IMAGE;
+import static xkv.data.ResourceLoader.*;
+import static xkv.data.VisualResourceLoader.DEFAULT_IMAGE;
 
 /**
  * Audion is the main logical container for the Firestarter media player.
@@ -407,7 +407,7 @@ public final class Audion
 
             imageSelect.setOnMouseClicked(value ->
             {
-                Image newImage = VisualResourceLoader.selectImageDialog(Firestarter.firestarter, "Select an Album Icon");
+                Image newImage = Firestarter.selectImageDialog("Select an Album Icon");
 
                 if (newImage != null && Data.activeAlbum != null)
                 {
@@ -430,7 +430,7 @@ public final class Audion
 
             DynamicButton trackImport = DynamicButton.configure(IMT_ICN, IMT_HOV).configureTooltip("Import Tracks");
             DynamicResizeable.addResizeListener(() -> trackImport.resize(0.1D * ADN.IMAGE_VIEW.getFitHeight()));
-            trackImport.setOnMouseClicked(value -> ResourceLoader.importMultiTrackDialog(Firestarter.firestarter, "Import Tracks"));
+            trackImport.setOnMouseClicked(value -> Firestarter.importMultiTrackDialog("Import Tracks"));
 
             StandardGridPane albumOptions = PaneFactory.autoPaddedGrid(10, 1, 4, Style.INSET);
 

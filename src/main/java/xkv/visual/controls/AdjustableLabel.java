@@ -10,17 +10,6 @@ import xkv.visual.css.Style;
 
 public class AdjustableLabel extends Label implements IStylable, IMultiDimensional<AdjustableLabel>
 {
-    public AdjustableLabel(String text)
-    {
-        super(text);
-    }
-
-    public AdjustableLabel(String text, Style... styles)
-    {
-        this(text);
-        addVisualStyle(styles);
-    }
-
     public AdjustableLabel alignment(Pos alignment)
     {
         this.setAlignment(alignment);
@@ -38,5 +27,16 @@ public class AdjustableLabel extends Label implements IStylable, IMultiDimension
         Insets padding = new Insets(top, right, bottom, left);
         setPadding(padding);
         return this;
+    }
+
+    public AdjustableLabel(String text)
+    {
+        super(text);
+    }
+
+    public AdjustableLabel(String text, Style... styles)
+    {
+        this(text);
+        addVisualStyle(styles);
     }
 }

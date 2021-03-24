@@ -1,24 +1,24 @@
-package xkv;
+package xkv.data;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import xkv.Firestarter;
 import xkv.content.Album;
 import xkv.visual.panels.audion.Audion;
 
 import java.io.*;
-import java.util.logging.Level;
 
 public class DataSerializer
 {
-    private static String directory = ResourceLoader.ResourceHeader.ALBUM_DATA.header();
+    private static final String directory = ResourceLoader.ResourceHeader.ALBUM_DATA.header();
 
-    private static File directoryFile = new File(directory);
+    private static final File directoryFile = new File(directory);
 
     private static void validate()
     {
         if (!directoryFile.exists() && !directoryFile.mkdir())
         {
-            Firestarter.OUTPUT.log(Level.SEVERE, "Fatal serialization error: album data directory creation failed");
+            Firestarter.severe("Fatal serialization error: album data directory creation failed");
             System.exit(69);
         }
     }
@@ -38,7 +38,7 @@ public class DataSerializer
             {
                 if (!albumFile.exists() && !albumFile.createNewFile())
                 {
-                    Firestarter.OUTPUT.log(Level.WARNING, String.format("Serialization error: Data for album '%s' could not be saved", album.displayName()));
+                    Firestarter.warning(String.format("Serialization error: Data for album '%s' could not be saved", album.displayName()));
                 }
 
                 else
@@ -86,7 +86,7 @@ public class DataSerializer
 
                 catch (IOException | JSONException e)
                 {
-                    Firestarter.OUTPUT.log(Level.WARNING, e.getLocalizedMessage());
+                    Firestarter.warning(e.getLocalizedMessage());
                 }
             }
         }

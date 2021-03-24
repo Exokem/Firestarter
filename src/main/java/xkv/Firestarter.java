@@ -7,11 +7,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import xkv.data.DataSerializer;
+import xkv.data.ResourceLoader;
+import xkv.data.VisualResourceLoader;
 import xkv.visual.Display;
 import xkv.visual.controls.StyledButton;
 import xkv.visual.css.Style;
@@ -23,30 +27,61 @@ import xkv.visual.panels.audion.Audion;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static xkv.visual.VisualResourceLoader.loadCSS;
+import static xkv.data.VisualResourceLoader.loadCSS;
 
 public class Firestarter extends Application
 {
-    private static final String TITLE = "Firestarter";
+    private static class Data
+    {
+        private static final String TITLE = "Firestarter";
+        private static final Logger OUTPUT = Logger.getLogger(TITLE);
+        private static final Set<String> STYLESHEETS = new HashSet<>();
 
-    public static final Logger OUTPUT = Logger.getLogger(TITLE);
-
-    public static final Set<String> STYLESHEETS = new HashSet<>();
-
-    public static Stage firestarter;
-
-    public static Region container;
+        private static Stage FIRESTARTER;
+        private static StandardGridPane MAIN_CONTAINER;
+    }
 
     public static double width()
     {
-        return firestarter.getWidth();
+        return Data.FIRESTARTER.getWidth();
     }
 
     public static double height()
     {
-        return firestarter.getHeight();
+        return Data.FIRESTARTER.getHeight();
+    }
+
+    public static void info(String message)
+    {
+        Data.OUTPUT.log(Level.INFO, message);
+    }
+
+    public static void warning(String message)
+    {
+        Data.OUTPUT.log(Level.WARNING, message);
+    }
+
+    public static void severe(String message)
+    {
+        Data.OUTPUT.log(Level.SEVERE, message);
+    }
+
+    public static void importStyleSheet(String convertedURL)
+    {
+        Data.STYLESHEETS.add(convertedURL);
+    }
+
+    public static void importMultiTrackDialog(String message)
+    {
+        ResourceLoader.importMultiTrackDialog(Data.FIRESTARTER, message);
+    }
+
+    public static Image selectImageDialog(String message)
+    {
+        return VisualResourceLoader.selectImageDialog(Data.FIRESTARTER, message);
     }
 
     @Override
@@ -54,12 +89,10 @@ public class Firestarter extends Application
     {
         ResourceLoader.SETUP.loadData();
 
-        ResourceLoader.loadResources();
+        Data.FIRESTARTER = stage;
+        Data.MAIN_CONTAINER = Display.ROOT;
 
-        firestarter = stage;
-        container = Display.ROOT;
-
-        Scene main = new Scene(container);
+        Scene main = new Scene(Data.MAIN_CONTAINER);
 
         loadCSS(main, "defaults");
         loadCSS(main, "visual");
@@ -68,7 +101,7 @@ public class Firestarter extends Application
         DataSerializer.deserializeAlbums();
 
         stage.setScene(main);
-        stage.setTitle(TITLE);
+        stage.setTitle(Data.TITLE);
 
         stage.show();
 
@@ -88,10 +121,10 @@ public class Firestarter extends Application
         Stage subsidiaryStage = new Stage();
         Scene scene = new Scene(root);
 
-        STYLESHEETS.forEach(sheet -> scene.getStylesheets().add(sheet));
+        Data.STYLESHEETS.forEach(sheet -> scene.getStylesheets().add(sheet));
 
         subsidiaryStage.setTitle(title);
-        subsidiaryStage.initOwner(firestarter);
+        subsidiaryStage.initOwner(Data.FIRESTARTER);
         subsidiaryStage.setScene(scene);
 
         subsidiaryStage.initModality(Modality.WINDOW_MODAL);
@@ -99,6 +132,7 @@ public class Firestarter extends Application
         return subsidiaryStage;
     }
 
+    @SafeVarargs
     public static Stage renameWindow(String title, String currentName, Consumer<String>... renameFunctions)
     {
         StandardGridPane layout = PaneFactory.autoPaddedGrid(10, 2, 2, Style.INSET);

@@ -4,8 +4,8 @@ import javafx.scene.image.Image;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import xkv.data.VisualResourceLoader;
 import xkv.util.Time;
-import xkv.visual.VisualResourceLoader;
 
 import java.time.Instant;
 import java.util.*;

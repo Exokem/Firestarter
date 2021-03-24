@@ -1,4 +1,4 @@
-package xkv.visual;
+package xkv.data;
 
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -6,13 +6,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xkv.Firestarter;
-import xkv.ResourceLoader.ResourceHeader;
+import xkv.data.ResourceLoader.ResourceHeader;
 import xkv.processes.Warning;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
 
 public class VisualResourceLoader
 {
@@ -31,12 +30,12 @@ public class VisualResourceLoader
         {
             if (url != null)
             {
-                Firestarter.OUTPUT.log(Level.INFO, "Loading stylesheet: " + url.getPath());
+                Firestarter.info("Loading stylesheet: " + url.getPath());
 
                 String converted = convertURL(url);
 
                 scene.getStylesheets().add(converted);
-                Firestarter.STYLESHEETS.add(converted);
+                Firestarter.importStyleSheet(converted);
             }
         } catch (MalformedURLException ignored)
         {
@@ -59,7 +58,7 @@ public class VisualResourceLoader
         }
         catch (NullPointerException | MalformedURLException | AssertionError exc)
         {
-            Firestarter.OUTPUT.log(Level.WARNING, Warning.Header.VRL_ERR + Warning.Content.INVALID_URL);
+            Firestarter.warning(Warning.Header.VRL_ERR + Warning.Content.INVALID_URL);
             return null;
         }
     }

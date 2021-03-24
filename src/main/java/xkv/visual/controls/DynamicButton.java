@@ -7,25 +7,60 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
-import xkv.visual.VisualResourceLoader;
+import xkv.data.VisualResourceLoader;
 import xkv.visual.panels.StandardGridPane;
 
 import java.util.function.Supplier;
 
 public class DynamicButton extends StandardGridPane
 {
-    protected Image image, hoveredImage;
+    public static DynamicButton configure(Image image, Image hovered)
+    {
+        DynamicButton button = new DynamicButton();
 
-    protected final ImageView view = new ImageView(), hoveredView = new ImageView();
+        button.image = image;
+        button.hoveredImage = hovered;
 
-    private final FadeTransition fade;
+        button.view.setImage(image);
+        button.hoveredView.setImage(hovered);
 
-    protected Supplier<Boolean> onClicked = () -> true;
+        return button;
+    }
 
-    protected Supplier<Boolean> qualifier = () -> true;
-    protected Runnable action = () -> {};
+    public DynamicButton bindQualifier(Supplier<Boolean> qualifier)
+    {
+        this.qualifier = qualifier;
+        return this;
+    }
+
+    public DynamicButton bindAction(Runnable action)
+    {
+        this.action = action;
+        return this;
+    }
+
+    public DynamicButton resize(double dimension)
+    {
+        VisualResourceLoader.scaleImageView(view, dimension);
+        VisualResourceLoader.scaleImageView(hoveredView, dimension);
+
+        return this;
+    }
+
+    public DynamicButton configureTooltip(String tooltip)
+    {
+        Tooltip.install(this, new Tooltip(tooltip));
+
+        return this;
+    }
 
     public static final double FADE_DURATION = 300;
+
+    protected Image image, hoveredImage;
+    protected final ImageView view = new ImageView(), hoveredView = new ImageView();
+    protected final FadeTransition fade;
+    protected Supplier<Boolean> qualifier = () -> true;
+    protected Runnable action = () -> {};
 
     protected DynamicButton()
     {
@@ -57,68 +92,30 @@ public class DynamicButton extends StandardGridPane
         });
     }
 
-    public static DynamicButton configure(Image image, Image hovered)
-    {
-        DynamicButton button = new DynamicButton();
-
-        button.image = image;
-        button.hoveredImage = hovered;
-
-        button.view.setImage(image);
-        button.hoveredView.setImage(hovered);
-
-        return button;
-    }
-
-    public void bindQualifier(Supplier<Boolean> qualifier)
-    {
-        this.qualifier = qualifier;
-    }
-
-    public void bindAction(Runnable action)
-    {
-        this.action = action;
-    }
-
-    public DynamicButton resize(double dimension)
-    {
-        VisualResourceLoader.scaleImageView(view, dimension);
-        VisualResourceLoader.scaleImageView(hoveredView, dimension);
-
-        return this;
-    }
-
-    public DynamicButton configureTooltip(String tooltip)
-    {
-        Tooltip.install(this, new Tooltip(tooltip));
-
-        return this;
-    }
-
     @Deprecated
     @Override
-    public void add(Node child, int columnIndex, int rowIndex, Priority... expansionPriorities)
+    public final void add(Node child, int columnIndex, int rowIndex, Priority... expansionPriorities)
     {
 
     }
 
     @Deprecated
     @Override
-    public void add(Node child, int columnIndex, int rowIndex, int colSpan, int rowSpan, Priority... expansionPriorities)
+    public final void add(Node child, int columnIndex, int rowIndex, int colSpan, int rowSpan, Priority... expansionPriorities)
     {
 
     }
 
     @Deprecated
     @Override
-    public void add(Node child, int columnIndex, int rowIndex)
+    public final void add(Node child, int columnIndex, int rowIndex)
     {
 
     }
 
     @Deprecated
     @Override
-    public void add(Node child, int columnIndex, int rowIndex, int colspan, int rowspan)
+    public final void add(Node child, int columnIndex, int rowIndex, int colspan, int rowspan)
     {
 
     }
