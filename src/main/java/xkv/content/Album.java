@@ -90,7 +90,8 @@ public class Album
         JSONArray tracks = albumJson.getJSONArray(TK_KEY);
         for (int indx = 0; indx < tracks.length(); indx ++)
         {
-            album.addTrack(Track.deserialize(tracks.getJSONObject(indx)));
+            Track track = Track.deserialize(tracks.getJSONObject(indx));
+            if (track != null) album.addTrack(track);
         }
 
         return album;
