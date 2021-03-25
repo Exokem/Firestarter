@@ -1,6 +1,7 @@
 package xkv.visual.panels.audion;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,7 @@ import xkv.Firestarter;
 import xkv.content.Album;
 import xkv.content.Track;
 import xkv.data.VisualResourceLoader;
+import xkv.processes.PlayerThread;
 import xkv.visual.HiddenRectangle;
 import xkv.visual.controls.DynamicButton;
 import xkv.visual.controls.DynamicToggledButton;
@@ -22,57 +24,61 @@ import xkv.visual.panels.DynamicResizeable;
 import xkv.visual.panels.PaneFactory;
 import xkv.visual.panels.StandardGridPane;
 
-import javax.sound.sampled.*;
-import java.io.IOException;
-
 import static xkv.data.ResourceLoader.*;
 import static xkv.data.VisualResourceLoader.DEFAULT_IMAGE;
 
 public class AudionPlayer
 {
-    private static boolean active = false;
     private static Track activeTrack = null;
     private static Album activeAlbum = null;
 
     private static boolean randomize = false, repeat = false;
 
+    private static final PlayerThread AUDIO_PLAYER = new PlayerThread();
+
     public static boolean activate(Track track)
     {
         assert track != null;
 
-        activeTrack = track;
+//        activeTrack = track;
 //        activeAlbum = Audion.Data.activeAlbum;
 
-        try
-        {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(track.data());
+        View.RATE_CONTROL.setSelected(true);
 
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
+        AUDIO_PLAYER.reset();
 
+        AUDIO_PLAYER.placeTrack(track);
+        AUDIO_PLAYER.activate();
 
-
-        }
-
-        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
-        {
-            e.printStackTrace();
-
-            return false;
-        }
+        if (!AUDIO_PLAYER.started()) AUDIO_PLAYER.start();
 
         return true;
     }
 
+    public static void reactivate()
+    {
+        AUDIO_PLAYER.activate();
+    }
+
+    public static void deactivate()
+    {
+        AUDIO_PLAYER.deactivate();
+    }
+
     public static boolean activable()
     {
-        return !active;
+        return !AUDIO_PLAYER.active() && AUDIO_PLAYER.hasTrack();
     }
 
     public static boolean deactivable()
     {
-        return active;
+        return AUDIO_PLAYER.active();
+    }
+
+    public static void updateProgress()
+    {
+        View.PROGRESS.setProgress(AUDIO_PLAYER.progress());
+        Platform.runLater(AudionPlayer::updateProgress);
     }
 
     protected static class View
@@ -83,6 +89,23 @@ public class AudionPlayer
         private static final HoverLabel AUTHOR = HoverLabel.configure("Author", "gray", "white", Style.SUBTITLE);
 
         private static final ProgressBar PROGRESS = progressView();
+
+        private static final DynamicToggledButton RATE_CONTROL = DynamicToggledButton.configure(PLA_ICN, PLA_HOV, PAU_ICN, PAU_HOV);
+
+        static
+        {
+            RATE_CONTROL.bindQualifier(() ->
+            {
+                if (RATE_CONTROL.selected()) return deactivable();
+                return activable();
+            });
+
+            RATE_CONTROL.bindAction(() ->
+            {
+                if (AUDIO_PLAYER.active()) deactivate();
+                else reactivate();
+            });
+        }
 
         protected static final StandardGridPane OVERLAY = overlay();
         private static final ImageView ICON_VIEW = new ImageView(DEFAULT_IMAGE);
@@ -131,13 +154,6 @@ public class AudionPlayer
             labels.add(TITLE, 0, 0);
             labels.add(AUTHOR, 0, 1);
 
-            DynamicToggledButton playPause = DynamicToggledButton.configure(PLA_ICN, PLA_HOV, PAU_ICN, PAU_HOV);
-            playPause.bindQualifier(() ->
-            {
-                if (playPause.selected()) return activable();
-                return deactivable();
-            });
-
             DynamicButton previous = DynamicButton.configure(PRE_ICN, PRE_HOV).configureTooltip("Previous");
 
             DynamicButton next = DynamicButton.configure(NXT_ICN, NXT_HOV).configureTooltip("Next");
@@ -152,7 +168,7 @@ public class AudionPlayer
 
             status.add(shuffle, 1, 1);
             status.add(previous, 2, 1);
-            status.add(playPause, 3, 1);
+            status.add(RATE_CONTROL, 3, 1);
             status.add(next, 4, 1);
             status.add(repeat, 5, 1);
 
@@ -174,7 +190,7 @@ public class AudionPlayer
 
                 shuffle.resize(actionSize);
                 previous.resize(actionSize);
-                playPause.resize(actionSize);
+                RATE_CONTROL.resize(actionSize);
                 next.resize(actionSize);
                 repeat.resize(actionSize);
             });
@@ -194,7 +210,10 @@ public class AudionPlayer
             {
                 OVERLAY_FADE.setRate(isHovered ? 1.0D : -1.0D);
                 OVERLAY_FADE.play();
+//                PROGRESS.setProgress(AUDIO_PLAYER.progress());
             });
+
+
 
             return overlay;
         }

@@ -53,8 +53,7 @@ public class TrackDisplay
         final DynamicButton play = DynamicButton.configure(TRK_ICN, TRK_HOV)
                 .configureTooltip("Play this track")
                 .resize(height)
-                .bindAction(() -> AudionPlayer.activate(track))
-                .bindQualifier(AudionPlayer::activable);
+                .bindAction(() -> AudionPlayer.activate(track));
 
         DynamicResizeable.addResizeListener(() ->
         {

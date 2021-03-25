@@ -29,6 +29,12 @@ public class DynamicToggledButton extends DynamicButton
         hoveredView.setImage(selected ? selectedHoveredImage : unselectedHoveredImage);
     }
 
+    public void setSelected(boolean value)
+    {
+        selected = !value;
+        switchSelect();
+    }
+
     private Image unselectedImage, unselectedHoveredImage;
     private Image selectedImage, selectedHoveredImage;
     private boolean selected = false;
