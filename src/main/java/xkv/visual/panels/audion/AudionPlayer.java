@@ -40,8 +40,9 @@ public class AudionPlayer
     {
         assert track != null;
 
-//        activeTrack = track;
-//        activeAlbum = Audion.Data.activeAlbum;
+        activeTrack = track;
+        activeAlbum = Audion.Data.activeAlbum;
+        View.ICON_VIEW.setImage(activeAlbum.image());
 
         View.RATE_CONTROL.setSelected(true);
 

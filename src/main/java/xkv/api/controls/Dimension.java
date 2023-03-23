@@ -10,12 +10,12 @@ public enum Dimension
     {
         switch (this)
         {
-            case MIN_WIDTH -> region.setMinWidth(value);
-            case PREF_WIDTH -> region.setPrefWidth(value);
-            case MAX_WIDTH -> region.setMaxWidth(value);
-            case MIN_HEIGHT -> region.setMinHeight(value);
-            case PREF_HEIGHT -> region.setPrefHeight(value);
-            case MAX_HEIGHT -> region.setMaxHeight(value);
+            case MIN_WIDTH: region.setMinWidth(value); break;
+            case PREF_WIDTH: region.setPrefWidth(value); break;
+            case MAX_WIDTH: region.setMaxWidth(value); break;
+            case MIN_HEIGHT: region.setMinHeight(value); break;
+            case PREF_HEIGHT: region.setPrefHeight(value); break;
+            case MAX_HEIGHT: region.setMaxHeight(value); break;
         }
     }
 }

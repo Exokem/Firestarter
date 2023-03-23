@@ -84,6 +84,11 @@ public class Firestarter extends Application
         return VisualResourceLoader.selectImageDialog(Data.FIRESTARTER, message);
     }
 
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
+
     @Override
     public void start(Stage stage) throws Exception
     {

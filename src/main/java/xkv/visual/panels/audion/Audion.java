@@ -58,7 +58,7 @@ public final class Audion
     /**
      * Data contains internal values and data structures.
      */
-    private static final class Data
+    static final class Data
     {
         // TODO: read dimensions from config
 
@@ -74,7 +74,7 @@ public final class Audion
         private static final AdjustableLabel ACTIVE_ALBUM_TITLE = new AdjustableLabel("", Style.TITLE_BOLD);
         private static final AdjustableLabel ACTIVE_ALBUM_SPAN = new AdjustableLabel("", Style.SUBTITLE);
 
-        private static Album activeAlbum = null;
+        static Album activeAlbum = null;
         private static Button activeAlbumButton = null;
     }
 

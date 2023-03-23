@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation(group: 'net.jthink', name: 'jaudiotagger', version: '2.2.3')
+    implementation(group: 'net.jthink', name: 'jaudiotagger', version: '3.0.1')
     implementation(group: 'org.json', name: 'json', version: '20210307')
 }
 
