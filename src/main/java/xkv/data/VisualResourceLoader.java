@@ -24,40 +24,23 @@ public class VisualResourceLoader
      */
     public static void loadCSS(Scene scene, String sheet)
     {
-        URL container = Firestarter.class.getProtectionDomain().getCodeSource().getLocation();
+        URL url = Firestarter.class.getClassLoader().getResource("css/" + sheet + ".css");
 
         try
         {
-            String converted = convertURL(container);
-            String path = converted.substring(0, converted.lastIndexOf('/')) + "/" + sheet + ".css";
+            if (url != null)
+            {
+                Firestarter.info("Loading stylesheet: " + url.getPath());
 
-            scene.getStylesheets().add(path);
-            Firestarter.importStyleSheet(path);
-            Firestarter.info(path);
-        }
+                String converted = convertURL(url);
 
-        catch (MalformedURLException e)
+                scene.getStylesheets().add(converted);
+                Firestarter.importStyleSheet(converted);
+            }
+        } catch (MalformedURLException ignored)
         {
-            Firestarter.warning(e.getMessage());
-        }
 
-//        URL url = Firestarter.class.getClassLoader().getResource("css/" + sheet + ".css");
-//
-//        try
-//        {
-//            if (url != null)
-//            {
-//                Firestarter.info("Loading stylesheet: " + url.getPath());
-//
-//                String converted = convertURL(url);
-//
-//                scene.getStylesheets().add(converted);
-//                Firestarter.importStyleSheet(converted);
-//            }
-//        } catch (MalformedURLException ignored)
-//        {
-//
-//        }
+        }
     }
 
     public static Image DEFAULT_IMAGE = loadImage(ResourceHeader.ALBUM_ICONS, "test4.png");
@@ -66,35 +49,18 @@ public class VisualResourceLoader
 
     public static Image loadImage(ResourceHeader resourceHeader, String identifier)
     {
-        URL container = Firestarter.class.getProtectionDomain().getCodeSource().getLocation();
-
         try
         {
-            String converted = convertURL(container);
-            String path = converted.substring(0, converted.lastIndexOf('/')) + "/" + resourceHeader.header() + identifier;
-            Firestarter.info(path);
-            return new Image(path);
-        }
+            URL sourceURL = Firestarter.class.getClassLoader().getResource(resourceHeader.header() + identifier);
 
-        catch (MalformedURLException e)
+            assert sourceURL != null;
+            return new Image(convertURL(sourceURL));
+        }
+        catch (NullPointerException | MalformedURLException | AssertionError exc)
         {
-            Firestarter.warning(e.getMessage());
+            Firestarter.warning(Warning.Header.VRL_ERR + Warning.Content.INVALID_URL);
+            return null;
         }
-
-        return null;
-
-//        try
-//        {
-//            URL sourceURL = Firestarter.class.getClassLoader().getResource(resourceHeader.header() + identifier);
-//
-//            assert sourceURL != null;
-//            return new Image(convertURL(sourceURL));
-//        }
-//        catch (NullPointerException | MalformedURLException | AssertionError exc)
-//        {
-//            Firestarter.warning(Warning.Header.VRL_ERR + Warning.Content.INVALID_URL);
-//            return null;
-//        }
     }
 
     public static Image selectImageDialog(Stage stage, String title)
